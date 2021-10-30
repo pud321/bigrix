@@ -15,9 +15,10 @@ jobs:
         run: exit 1
 
   testRunner:
-    needs: checkLicense
+    needs: Run tests
     name: Test all modes
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -46,12 +47,12 @@ jobs:
      - name: Checkout code
        uses: actions/checkout@v2
 
-      - name: Build project
-        uses: game-ci/unity-builder@v2
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-        with:
-          targetPlatform: WebGL
+    - name: Build project
+      uses: game-ci/unity-builder@v2
+      env:
+        UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+      with:
+        targetPlatform: WebGL
 
       - uses: actions/upload-artifact@v2
         with:
