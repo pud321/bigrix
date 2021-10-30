@@ -15,7 +15,7 @@ jobs:
         run: exit 1
 
   testRunner:
-    needs: Run tests
+    needs: checkLicense
     name: Test all modes
     runs-on: ubuntu-latest
 
