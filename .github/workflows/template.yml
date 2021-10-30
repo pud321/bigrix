@@ -38,17 +38,20 @@ jobs:
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
 
-
-  deployPages:
+  buildMatix:
     needs: testRunner
-    name: Build and Deploy WebGL to Github Pages
+    name: Build for ${{ matrix.targetPlatform }}
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
     strategy:
       fail-fast: false
+      matrix:
+        targetPlatform:
+          - iOS
+          - WebGL
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
       - name: Restore Library cache
         uses: actions/cache@v2
         with:
@@ -56,17 +59,28 @@ jobs:
           key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
           restore-keys: |
             Library-
-
-      - name: Build project
-        uses: game-ci/unity-builder@v2
+      - uses: game-ci/unity-builder@v2
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
-          targetPlatform: WebGL
-
+          targetPlatform: ${{ matrix.targetPlatform }}
       - uses: actions/upload-artifact@v2
         with:
-          name: build-WebGL
+          name: Build-${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
+
+  deployWebGLPages:
+    needs: buildMatix
+    name: Build and Deploy WebGL to Github Pages
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: Build-WebGL
           path: build
 
       - name: Display structure of root files
