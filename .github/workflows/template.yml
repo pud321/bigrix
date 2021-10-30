@@ -41,36 +41,40 @@ jobs:
 
   deployPages:
     needs: testRunner
-    name: Deploy to Github Pages
+    name: Build and Deploy WebGL to Github Pages
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
     steps:
-     - name: Checkout code
-       uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Build project
-      uses: game-ci/unity-builder@v2
-      env:
-        UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-      with:
-        targetPlatform: WebGL
+      - name: Restore Library cache
+        uses: actions/cache@v2
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
+
+      - name: Build project
+        uses: game-ci/unity-builder@v2
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          targetPlatform: WebGL
 
       - uses: actions/upload-artifact@v2
         with:
-          name: Build
-          path: build
+          name: build-WebGL
+          path: build/WebGL
 
-     - uses: actions/download-artifact@v2
-       with:
-         name: build-WebGL
-         path: build
+      - name: Display structure of root files
+        run: ls -R
+        working-directory: build/WebGL
 
-     - name: Display structure of root files
-       run: ls -R
-       working-directory: build/WebGL
-
-     - name: Deploy
-       uses: JamesIves/github-pages-deploy-action@4.1.4
-       with:
-         branch: gh-pages
-         folder: build/WebGL
-
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: gh-pages
+          folder: build/WebGL
