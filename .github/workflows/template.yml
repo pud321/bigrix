@@ -72,7 +72,7 @@ jobs:
 
   deployWebGLPages:
     needs: buildMatix
-    name: Build and Deploy WebGL to Github Pages
+    name: Deploy WebGL to Github Pages
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
     steps:
