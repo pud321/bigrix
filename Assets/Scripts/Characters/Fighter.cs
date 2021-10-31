@@ -6,7 +6,7 @@ public class Fighter : AbstractCharacter
 {
     private void Start()
     {
-        base.base_speed = 5f;
+        base.base_speed = 0.5f;
         base.Start();
     }
 }

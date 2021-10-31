@@ -4,12 +4,12 @@ using UnityEngine;
 public class NearestTarget : ITargeting
 {
 
-    private List<AbstractEnemy> _enemies;
+    private List<AbstractCharacter> _enemies;
     private Transform _self_transform;
 
     public Transform _currentTarget;
 
-    public NearestTarget(Transform _self_transform, List<AbstractEnemy> _enemies)
+    public NearestTarget(Transform _self_transform, List<AbstractCharacter> _enemies)
     {
         this._enemies = _enemies;
         this._self_transform = _self_transform;
@@ -28,19 +28,19 @@ public class NearestTarget : ITargeting
     {
         float current_distance = float.MaxValue;
         float _distance;
-        AbstractEnemy selected_enemy = null;
+        AbstractCharacter selected_target = null;
 
-        foreach (AbstractEnemy ae in _enemies)
+        foreach (AbstractCharacter ac in _enemies)
         {
-            _distance = Vector3.Distance(_self_transform.position, ae.enemy_transform.position);
+            _distance = Vector3.Distance(_self_transform.position, ac._this_transform.position);
 
             if (_distance < current_distance)
             {
                 current_distance = _distance;
-                selected_enemy = ae;
+                selected_target = ac;
             }
         }
 
-        _currentTarget = selected_enemy == null ? _self_transform : selected_enemy.enemy_transform;
+        _currentTarget = selected_target == null ? _self_transform : selected_target._this_transform;
     }
 }

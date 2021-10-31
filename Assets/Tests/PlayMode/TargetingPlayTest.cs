@@ -9,29 +9,29 @@ public class TargetingPlayTest
     [UnityTest]
     public IEnumerator SingleTargetNearest()
     {
-        List<AbstractEnemy> enemies = new List<AbstractEnemy>();
+        List<AbstractCharacter> targets = new List<AbstractCharacter>();
 
-        GameObject enemy_object = new GameObject();
-        enemies.Add(enemy_object.AddComponent<BasicEnemy>());
+        GameObject target_object = new GameObject();
+        targets.Add(target_object.AddComponent<BasicEnemy>());
 
         GameObject character_object = new GameObject();
 
-        ITargeting new_targeting = new NearestTarget(character_object.transform, enemies);
+        ITargeting new_targeting = new NearestTarget(character_object.transform, targets);
 
         Transform current_target = new_targeting.GetCurrentTarget(true);
 
         yield return null;
-        Assert.AreSame(current_target, enemy_object.transform);
+        Assert.AreSame(current_target, target_object.transform);
 
     }
 
     [UnityTest]
     public IEnumerator NoTargetNearest()
     {
-        List<AbstractEnemy> enemies = new List<AbstractEnemy>();    
+        List<AbstractCharacter> targets = new List<AbstractCharacter>();    
         GameObject character_object = new GameObject();
 
-        ITargeting new_targeting = new NearestTarget(character_object.transform, enemies);
+        ITargeting new_targeting = new NearestTarget(character_object.transform, targets);
 
         Transform current_target = new_targeting.GetCurrentTarget(true);
 

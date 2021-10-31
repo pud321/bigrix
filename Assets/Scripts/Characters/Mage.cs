@@ -7,7 +7,7 @@ public class Mage : AbstractCharacter
 
     private void Start()
     {
-        base.base_speed = 2f;
+        base.base_speed = 0.2f;
         base.Start();
     }
 
