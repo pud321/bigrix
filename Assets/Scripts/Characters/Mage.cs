@@ -11,4 +11,8 @@ public class Mage : AbstractCharacter
         base.Start();
     }
 
+    protected override void SetActions()
+    {
+        _action_controller.UpdateDefaultAction(new NavMeshMoveAction(_navmeshagent), ActionType.Attack);
+    }
 }

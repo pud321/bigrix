@@ -10,14 +10,14 @@ public class EnemyCharacterManager : MonoBehaviour
 
     public void Start()
     {
-        foreach (AbstractCharacter ac in current_character)
-        {
-            ac.SetEnemies(current_enemy);
-        }
-
         foreach (AbstractCharacter ac in current_enemy)
         {
-            ac.SetEnemies(current_character);
+            ac.SetTargets(current_enemy, current_character);
+        }
+
+        foreach (AbstractCharacter ac in current_character)
+        {
+            ac.SetTargets(current_character, current_enemy);
         }
     }
 

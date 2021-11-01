@@ -9,4 +9,9 @@ public class BasicEnemy : AbstractCharacter
         base.base_speed = 0.1f;
         base.Start();
     }
+
+    protected override void SetActions()
+    {
+        _action_controller.UpdateDefaultAction(new NavMeshMoveAction(_navmeshagent), ActionType.Attack);
+    }
 }

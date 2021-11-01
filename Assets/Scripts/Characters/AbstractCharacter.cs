@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -6,14 +5,15 @@ using UnityEngine.AI;
 public abstract class AbstractCharacter : MonoBehaviour
 {
 
-    private NavMeshAgent _navmeshagent;
-    protected ITargeting _targeting_system;
+    protected NavMeshAgent _navmeshagent;
+    protected ActionController _action_controller;
+
     public Transform _this_transform;
     
     protected float base_speed;
+    protected float targeting_refresh_rate = 1f;
 
-    private int search_rate = 30;
-    private int _target_search;
+    private float _next_execution = 0f;
 
     protected void Awake()
     {
@@ -23,7 +23,6 @@ public abstract class AbstractCharacter : MonoBehaviour
 
     protected void Start()
     {
-        _target_search = search_rate;
         if (_navmeshagent != null)
         {
             _navmeshagent.speed = base_speed;
@@ -37,22 +36,18 @@ public abstract class AbstractCharacter : MonoBehaviour
             return;
         }
 
-        bool set_new_target = _target_search == search_rate;
-
-        if (set_new_target)
+        if (Time.time >= _next_execution)
         {
-            _target_search = 0;
+            float wait_time = _action_controller.NextAction();
+            _next_execution = Time.time + wait_time;
         }
-        else
-        {
-            _target_search += 1;
-        }
-
-        _navmeshagent.destination = _targeting_system.GetCurrentTarget(set_new_target).position;
     }
 
-    public void SetEnemies(List<AbstractCharacter> _enemies)
+    public void SetTargets(List<AbstractCharacter> allys, List<AbstractCharacter> enemies)
     {
-        _targeting_system = new NearestTarget(this.transform, _enemies);
+        _action_controller = new ActionController(allys, enemies);
+        SetActions();
     }
+
+    protected abstract void SetActions();
 }

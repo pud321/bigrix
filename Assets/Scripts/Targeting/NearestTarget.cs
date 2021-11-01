@@ -7,24 +7,32 @@ public class NearestTarget : ITargeting
     private List<AbstractCharacter> _enemies;
     private Transform _self_transform;
 
+    private float _expiration_period;
+    private float _next_expriation;
+
     public Transform _currentTarget;
 
-    public NearestTarget(Transform _self_transform, List<AbstractCharacter> _enemies)
+    public NearestTarget(Transform _self_transform, List<AbstractCharacter> _enemies) : this(_self_transform, _enemies, 0f) { }
+
+    public NearestTarget(Transform _self_transform, List<AbstractCharacter> _enemies, float _expiration_period)
     {
         this._enemies = _enemies;
         this._self_transform = _self_transform;
+        this._expiration_period = _expiration_period;
+        this._next_expriation = -1;
     }
 
-    public Transform GetCurrentTarget(bool set_target)
+
+    public Transform GetCurrentTarget()
     {
-        if (set_target)
+        if (_IsExpired())
         {
-            SetCurrentTarget();
+            _SetCurrentTarget();
         }
         return _currentTarget;
     }
 
-    private void SetCurrentTarget()
+    private void _SetCurrentTarget()
     {
         float current_distance = float.MaxValue;
         float _distance;
@@ -42,5 +50,17 @@ public class NearestTarget : ITargeting
         }
 
         _currentTarget = selected_target == null ? _self_transform : selected_target._this_transform;
+    }
+
+    private bool _IsExpired()
+    {
+        bool isExpired = Time.time >= _next_expriation;
+
+        if (isExpired)
+        {
+            _next_expriation = Time.time + _expiration_period;
+        }
+
+        return isExpired;
     }
 }
