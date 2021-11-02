@@ -1,19 +1,23 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 public abstract class AbstractCharacter : MonoBehaviour
 {
-
-    private NavMeshAgent _navmeshagent;
-    protected ITargeting _targeting_system;
     public Transform _this_transform;
+
+    public delegate void CharacterEventHandler(AbstractCharacter sender);
+    public event CharacterEventHandler OnCharacterDeath;
+
+    protected NavMeshAgent _navmeshagent;
+    protected ActionController _action_controller;
     
     protected float base_speed;
+    protected int max_health = 20;
+    protected int current_health;
+    protected float targeting_refresh_rate = 1f;
 
-    private int search_rate = 30;
-    private int _target_search;
+    private float _next_execution = 0f;
 
     protected void Awake()
     {
@@ -23,7 +27,8 @@ public abstract class AbstractCharacter : MonoBehaviour
 
     protected void Start()
     {
-        _target_search = search_rate;
+        current_health = max_health;
+
         if (_navmeshagent != null)
         {
             _navmeshagent.speed = base_speed;
@@ -32,27 +37,50 @@ public abstract class AbstractCharacter : MonoBehaviour
 
     protected void Update()
     {
+        CheckAndDestroyCharacter();
+
         if (!_navmeshagent)
-        {
+        { 
             return;
         }
 
-        bool set_new_target = _target_search == search_rate;
-
-        if (set_new_target)
+        if (Time.time >= _next_execution)
         {
-            _target_search = 0;
+            float wait_time = _action_controller.NextAction();
+            _next_execution = Time.time + wait_time;
         }
-        else
-        {
-            _target_search += 1;
-        }
-
-        _navmeshagent.destination = _targeting_system.GetCurrentTarget(set_new_target).position;
     }
 
-    public void SetEnemies(List<AbstractCharacter> _enemies)
+    private void CheckAndDestroyCharacter()
     {
-        _targeting_system = new NearestTarget(this.transform, _enemies);
+        if (current_health <= 0)
+        {
+            OnCharacterDeath?.Invoke(this);
+            Destroy(this.gameObject);
+        }
     }
+
+    public void ChangeHealth(int amount)
+    {
+        current_health += amount;
+        
+        if (current_health < 0)
+        {
+            current_health = 0;
+        }
+
+        if (current_health > max_health)
+        {
+            current_health = max_health;
+        }
+
+    }
+
+    public void SetTargets(List<AbstractCharacter> allys, List<AbstractCharacter> enemies)
+    {
+        _action_controller = new ActionController(allys, enemies);
+        SetActions();
+    }
+
+    protected abstract void SetActions();
 }

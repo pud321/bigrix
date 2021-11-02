@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface ITargeting
 {
-    Transform GetCurrentTarget(bool set_target);
+    Transform GetCurrentTarget();
 }
