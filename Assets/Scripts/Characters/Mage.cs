@@ -5,14 +5,16 @@ using UnityEngine;
 public class Mage : AbstractCharacter
 {
 
-    private void Start()
+    private void Awake()
     {
-        base.base_speed = 0.2f;
-        base.Start();
+        base_speed = 0.2f;
+        base.Awake();
     }
 
     protected override void SetActions()
     {
         _action_controller.UpdateDefaultAction(new NavMeshMoveAction(_navmeshagent), ActionType.Attack);
+        _action_controller.UpdateItemAction(new MeleeAttackAction(_this_transform));
     }
+
 }

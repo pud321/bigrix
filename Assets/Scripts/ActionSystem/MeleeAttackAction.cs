@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class MeleeAttackAction : AbstractAction
 {
-
     private ITargeting _targeting;
     private int _damage;
+    private DamageType _damage_type;
     
     public MeleeAttackAction(Transform this_tranform)
     {
@@ -15,6 +15,7 @@ public class MeleeAttackAction : AbstractAction
         this._execution_time = 3f;
         this._action_type = ActionType.Attack;
         this._damage = -10;
+        this._damage_type = DamageType.Normal;
         _this_transform = this_tranform;
     }
 
@@ -30,9 +31,14 @@ public class MeleeAttackAction : AbstractAction
 
     public override void RunAction()
     {
-        AbstractCharacter desired_target = DesiredTarget().GetComponent<AbstractCharacter>();
-        desired_target.ChangeHealth(_damage);
-        _next_action_time = Time.time + _action_period;
+        Transform target_transform = DesiredTarget();
+
+        if (target_transform != _this_transform)
+        {
+            AbstractCharacter desired_target = target_transform.GetComponent<AbstractCharacter>();
+            desired_target.ChangeHealth(_damage, _damage_type);
+            _next_action_time = Time.time + _action_period;
+        }
     }
 
     public override void StopAction()

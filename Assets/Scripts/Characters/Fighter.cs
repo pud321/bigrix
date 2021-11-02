@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Fighter : AbstractCharacter
 {
-    private void Start()
+    private void Awake()
     { 
-        base.base_speed = 0.5f;
-        base.Start();
+        base_speed = 0.5f;
+        base.Awake();
     }
 
     protected override void SetActions()

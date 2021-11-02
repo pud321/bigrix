@@ -7,14 +7,17 @@ public abstract class AbstractCharacter : MonoBehaviour
     public Transform _this_transform;
 
     public delegate void CharacterEventHandler(AbstractCharacter sender);
+    public delegate void CharacterDamageHandler(AbstractCharacter sender, DamageEventArgs e);
+
     public event CharacterEventHandler OnCharacterDeath;
+    public event CharacterDamageHandler OnCharacterHealth;
 
     protected NavMeshAgent _navmeshagent;
     protected ActionController _action_controller;
     
     protected float base_speed;
-    protected int max_health = 20;
-    protected int current_health;
+    public int max_health = 100;
+    public int current_health;
     protected float targeting_refresh_rate = 1f;
 
     private float _next_execution = 0f;
@@ -23,12 +26,11 @@ public abstract class AbstractCharacter : MonoBehaviour
     {
         _navmeshagent = GetComponent<NavMeshAgent>();
         _this_transform = this.transform;
+        current_health = max_health;
     }
 
     protected void Start()
     {
-        current_health = max_health;
-
         if (_navmeshagent != null)
         {
             _navmeshagent.speed = base_speed;
@@ -60,10 +62,10 @@ public abstract class AbstractCharacter : MonoBehaviour
         }
     }
 
-    public void ChangeHealth(int amount)
+    public void ChangeHealth(int amount, DamageType damage_type)
     {
         current_health += amount;
-        
+
         if (current_health < 0)
         {
             current_health = 0;
@@ -74,6 +76,7 @@ public abstract class AbstractCharacter : MonoBehaviour
             current_health = max_health;
         }
 
+        OnCharacterHealth?.Invoke(this, new DamageEventArgs(amount, damage_type));
     }
 
     public void SetTargets(List<AbstractCharacter> allys, List<AbstractCharacter> enemies)
@@ -81,6 +84,8 @@ public abstract class AbstractCharacter : MonoBehaviour
         _action_controller = new ActionController(allys, enemies);
         SetActions();
     }
+
+    public float health_percent {  get { return (float)current_health/(float)max_health;} }
 
     protected abstract void SetActions();
 }

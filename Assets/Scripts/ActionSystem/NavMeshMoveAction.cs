@@ -38,6 +38,7 @@ public class NavMeshMoveAction : AbstractAction
     {
         _navmeshagent.SetDestination(_this_transform.position);
     }
+
     public override void SetTargets(List<AbstractCharacter> targets)
     {
         _targets = targets;

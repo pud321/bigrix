@@ -25,10 +25,16 @@ public class NearestTarget : ITargeting
 
     public Transform GetCurrentTarget()
     {
+        if (_currentTarget == null)
+        {
+            _next_expriation = Time.time;
+        }
+
         if (_IsExpired())
         {
             _SetCurrentTarget();
         }
+
         return _currentTarget;
     }
 
