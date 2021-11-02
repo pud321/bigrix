@@ -6,6 +6,7 @@ public class MeleeAttackAction : AbstractAction
 {
 
     private ITargeting _targeting;
+    private int _damage;
     
     public MeleeAttackAction(Transform this_tranform)
     {
@@ -13,6 +14,7 @@ public class MeleeAttackAction : AbstractAction
         this._action_period = 6f;
         this._execution_time = 3f;
         this._action_type = ActionType.Attack;
+        this._damage = -10;
         _this_transform = this_tranform;
     }
 
@@ -28,6 +30,8 @@ public class MeleeAttackAction : AbstractAction
 
     public override void RunAction()
     {
+        AbstractCharacter desired_target = DesiredTarget().GetComponent<AbstractCharacter>();
+        desired_target.ChangeHealth(_damage);
         _next_action_time = Time.time + _action_period;
     }
 

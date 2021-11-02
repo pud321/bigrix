@@ -14,7 +14,7 @@ public class NavMeshMoveAction : AbstractAction
         _this_transform = _navmeshagent.transform;
         this._range = 0f;
         this._action_period = 0f;
-        this._execution_time = 1f;
+        this._execution_time = 0.5f;
         this._action_type = ActionType.Attack;
     }
 
