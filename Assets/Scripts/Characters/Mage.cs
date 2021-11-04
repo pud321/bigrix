@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Mage : AbstractCharacter
 {
+    public override CharacterEnums character_type { get { return CharacterEnums.Mage; } }
 
     private void Awake()
     {

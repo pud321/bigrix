@@ -15,9 +15,10 @@ public abstract class AbstractCharacter : MonoBehaviour
     protected NavMeshAgent _navmeshagent;
     protected ActionController _action_controller;
     
-    protected float base_speed;
+    public float base_speed;
     public int max_health = 100;
     public int current_health;
+    public abstract CharacterEnums character_type { get; }
     protected float targeting_refresh_rate = 1f;
 
     private float _next_execution = 0f;

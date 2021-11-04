@@ -8,6 +8,7 @@ public class MeleeAttackAction : AbstractAction
     private int _damage;
     private DamageType _damage_type;
     
+
     public MeleeAttackAction(Transform this_tranform)
     {
         this._range = 2f;

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Fighter : AbstractCharacter
 {
+    public override CharacterEnums character_type { get { return CharacterEnums.Fighter; } }
+
     private void Awake()
     { 
         base_speed = 0.5f;
@@ -12,7 +14,7 @@ public class Fighter : AbstractCharacter
 
     protected override void SetActions()
     {
-        _action_controller.UpdateDefaultAction(new NavMeshMoveAction(_navmeshagent), ActionType.Attack);
+        _action_controller.UpdateDefaultAction(new NavMeshMoveAction(_navmeshagent, 2f), ActionType.Attack);
         _action_controller.UpdateItemAction(new MeleeAttackAction(_this_transform));
     }
 

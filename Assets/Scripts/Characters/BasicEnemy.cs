@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class BasicEnemy : AbstractCharacter
 {
+    public override CharacterEnums character_type { get { return CharacterEnums.Enemy; } }
+
     private void Awake()
     {
         base_speed = 0.1f;
-        max_health = 20;
+        max_health = 100;
         base.Awake();
     }
 
