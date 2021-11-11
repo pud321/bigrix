@@ -2,23 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class AbstractAction : IAction
+public abstract class AbstractAction
 {
     public ActionType action_type { get { return _action_type; } }
     public float range { get { return _range; } }
     public float timeRemaining { get { return _next_action_time - Time.time; } }
-    public float execution_time { get { return _execution_time; } }
 
     protected ActionType _action_type;
     protected Transform _this_transform;
     protected float _range;
-    protected float _action_period;
+    protected float frequency;
     protected float _next_action_time = 0f;
-    protected float _execution_time = 0f;
 
-    protected List<AbstractCharacter> _targets;
+    protected List<CharacterManager> _targets;
 
-    public abstract void SetTargets(List<AbstractCharacter> targets);
+    public abstract void SetTargets(List<CharacterManager> targets);
 
     public abstract void RunAction();
     public abstract void StopAction();

@@ -4,7 +4,7 @@ using UnityEngine;
 public class NearestTarget : ITargeting
 {
 
-    private List<AbstractCharacter> _enemies;
+    private List<CharacterManager> _enemies;
     private Transform _self_transform;
 
     private float _expiration_period;
@@ -12,9 +12,9 @@ public class NearestTarget : ITargeting
 
     public Transform _currentTarget;
 
-    public NearestTarget(Transform _self_transform, List<AbstractCharacter> _enemies) : this(_self_transform, _enemies, 0f) { }
+    public NearestTarget(Transform _self_transform, List<CharacterManager> _enemies) : this(_self_transform, _enemies, 0f) { }
 
-    public NearestTarget(Transform _self_transform, List<AbstractCharacter> _enemies, float _expiration_period)
+    public NearestTarget(Transform _self_transform, List<CharacterManager> _enemies, float _expiration_period)
     {
         this._enemies = _enemies;
         this._self_transform = _self_transform;
@@ -25,10 +25,16 @@ public class NearestTarget : ITargeting
 
     public Transform GetCurrentTarget()
     {
+        if (_currentTarget == null)
+        {
+            _next_expriation = Time.time;
+        }
+
         if (_IsExpired())
         {
             _SetCurrentTarget();
         }
+
         return _currentTarget;
     }
 
@@ -36,9 +42,9 @@ public class NearestTarget : ITargeting
     {
         float current_distance = float.MaxValue;
         float _distance;
-        AbstractCharacter selected_target = null;
+        CharacterManager selected_target = null;
 
-        foreach (AbstractCharacter ac in _enemies)
+        foreach (CharacterManager ac in _enemies)
         {
             _distance = Vector3.Distance(_self_transform.position, ac._this_transform.position);
 

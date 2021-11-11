@@ -1,12 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
 
 public class ActionController
 {
-    public Dictionary<ActionType, IAction> default_action;
-    public IAction item_action;
+    public NavMeshMoveAction movement_action;
+    public IAction basic_action;
     public IAction[] skilled_action;
 
     private int _total_actions = 1;
@@ -15,15 +14,14 @@ public class ActionController
     private Queue<IAction> action_history;
     private IAction last_action;
 
-    private List<AbstractCharacter> _ally_characters;
-    private List<AbstractCharacter> _enemy_characters;
+    private List<CharacterManager> _ally_characters;
+    private List<CharacterManager> _enemy_characters;
 
-
-    public ActionController(List<AbstractCharacter> allys, List<AbstractCharacter> enemies)
+    public ActionController(List<CharacterManager> allys, List<CharacterManager> enemies)
     {
         skilled_action = new IAction[_total_actions];
-        default_action = new Dictionary<ActionType, IAction>();
         action_history = new Queue<IAction>();
+
         _ally_characters = allys;
         _enemy_characters = enemies;
     }
@@ -31,19 +29,22 @@ public class ActionController
     public void UpdateSkilledAction(IAction action, int slot)
     {
         skilled_action[slot] = action;
-        _SetActionTargets(action);
+        movement_action.UpdateRange(GetMinimumRange());
+        SetActionTargets(action);
     }
 
-    public void UpdateItemAction(IAction action)
+    public void AddBasicAction(IAction action)
     {
-        item_action = action;
-        _SetActionTargets(action);
+        basic_action = action;
+        movement_action.UpdateRange(GetMinimumRange());
+        SetActionTargets(action);
     }
 
-    public void UpdateDefaultAction(IAction action, ActionType action_type)
+    public void AddMovementAction(NavMeshMoveAction action)
     {
-        default_action[action_type] = action;
-        _SetActionTargets(action);
+        movement_action = action;
+        movement_action.UpdateRange(GetMinimumRange());
+        SetActionTargets(action);
     }
 
     public float NextAction()
@@ -54,7 +55,7 @@ public class ActionController
             last_action = null;
         }
 
-        IAction next_action = _FindNextAction();
+        IAction next_action = FindNextAction();
 
         if (next_action == null)
         {
@@ -63,19 +64,19 @@ public class ActionController
 
         if (!next_action.CanRunAction())
         {
-            next_action = default_action[next_action.action_type];
+            next_action = movement_action;
         }
         else
         {
-            _AddActionToQueue(next_action);
+            AddActionToQueue(next_action);
         }
 
         next_action.RunAction();
         last_action = next_action;
-        return next_action.execution_time;
+        return 3f;
     }
 
-    private void _AddActionToQueue(IAction action)
+    private void AddActionToQueue(IAction action)
     {
         action_history.Enqueue(action);
 
@@ -85,12 +86,31 @@ public class ActionController
         }
     }
 
-    private IAction _FindNextAction()
+    private IAction FindNextAction()
     {
-        return item_action;
+        float temp_time_remaining;
+        float best_time = basic_action.timeRemaining;
+        IAction action_choice = basic_action;
+
+        foreach (IAction action in skilled_action)
+        {
+            if (action == null)
+            {
+                continue;
+            }
+
+            temp_time_remaining = action.timeRemaining;
+
+            if (temp_time_remaining < best_time)
+            {
+                best_time = temp_time_remaining;
+                action_choice = action;
+            }
+        }
+        return action_choice;
     }
 
-    private void _SetActionTargets(IAction action)
+    private void SetActionTargets(IAction action)
     {
         switch (action.action_type)
         {
@@ -100,5 +120,33 @@ public class ActionController
             default:
                 break;
         }
+    }
+
+    private float GetMinimumRange()
+    {
+        float temp_minimum_range;
+
+        if (basic_action == null)
+        {
+            return 0f;
+        }
+
+        float min_range = basic_action.range;
+
+        foreach (IAction action in skilled_action)
+        {
+            if (action == null)
+            {
+                continue;
+            }
+
+            temp_minimum_range = action.range;
+
+            if (temp_minimum_range < min_range)
+            {
+                min_range = temp_minimum_range;
+            }
+        }
+        return min_range;
     }
 }
