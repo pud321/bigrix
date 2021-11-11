@@ -5,23 +5,17 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    public Text score_text;
-    private int _score;
+    [SerializeField] public Text score_text;
+  
 
-    private void Awake()
+    private void Start()
     {
-        _score = 0;
-        ChangeScore();
+        UpdateScoreText();
     }
 
-    public void UpdateScoreText(int i)
+    public void UpdateScoreText()
     {
-        _score += i;
-        ChangeScore();
+        score_text.text = "Enemies: " + GameStats.enemy_characters_count.ToString();
     }
 
-    private void ChangeScore()
-    {
-        score_text.text = _score.ToString();
-    }
 }

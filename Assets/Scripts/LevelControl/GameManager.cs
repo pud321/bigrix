@@ -1,42 +1,97 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    private SpawnerManager spawner;
+    private UIManager ui_manager;
+    private CharacterInventory character_inventory;
 
-    private CharacterSpawner spawner;
-    public UIManager ui_manager; 
+    private Queue<GameObject> cleanup_queue;
 
     private void Awake()
     {
-        spawner = GetComponent<CharacterSpawner>();
+        cleanup_queue = new Queue<GameObject>();
+        spawner = GetComponent<SpawnerManager>();
         ui_manager = GetComponent<UIManager>();
+        character_inventory = GetComponent<CharacterInventory>();
 
-        spawner.OnCharacterSpawn += DelegateSpawnInformation;
+        GameStats.Initialize();
+        CharacterDefinitions.Initialize();
+        LevelDefinition.Initialize();
+
+        spawner.AddSpawnListener(DelegatePlayerSpawn);
+        spawner.AddSpawnListener(DelegateEnemySpawn);
+
     }
 
     private void Start()
     {
-        spawner.StartLevel();
+        GameStats.StartTime();
+
+        character_inventory.AddNew(CharacterEnums.Fighter, 1);
+        character_inventory.AddNew(CharacterEnums.Fighter, 1);
+        character_inventory.AddNew(CharacterEnums.Mage, 1);
+
+        spawner.SpawnAll(character_inventory.data);
+
         spawner.ListenToCharacterDamage(DelegateDamageInformation);
-        spawner.ListenToCharacterDeath(DelegateDeathInformation);
 
+        spawner.ListenToCharacterDeath(DelegateEnemyDeath);
+        spawner.ListenToCharacterDeath(DelegatePlayerDeath);
     }
 
-    private void DelegateDamageInformation(AbstractCharacter sender, DamageEventArgs e)
+    public void DelegatePlayerSpawn(PlayerCharacterManager manager)
+    {
+        character_inventory.SetCharacterContent(manager);
+        GameStats.player_characters_count += 1;
+    }
+
+    public void DelegateEnemySpawn(EnemyCharacterManager manager)
+    {
+        ui_manager.UpdateScoreText();
+        GameStats.enemy_characters_count += 1;
+        ui_manager.UpdateScoreText();
+    }
+
+    private void DelegateDamageInformation(CharacterManager sender, DamageEventArgs e)
     {
     }
 
-    private void DelegateDeathInformation(AbstractCharacter sender)
+    private void DelegatePlayerDeath(PlayerCharacterManager sender)
     {
-        Debug.Log("Death");
-        ui_manager.UpdateScoreText(-1);
+        DelegateDeathCommon(sender);
     }
 
-    private void DelegateSpawnInformation(AbstractCharacter sender)
+    private void DelegateEnemyDeath(EnemyCharacterManager sender)
     {
-        Debug.Log("Spawn " + sender.name);
-        ui_manager.UpdateScoreText(1);
+        DelegateDeathCommon(sender);
+        ui_manager.UpdateScoreText();
+
+        character_inventory.AddExperience(sender.xp_value);
+
+
+        if (GameStats.enemy_characters_count == 0)
+        {
+            string currentScene = SceneManager.GetActiveScene().name;
+            SceneManager.LoadScene(currentScene);
+        }
+    }
+
+    private void DelegateDeathCommon(CharacterManager sender)
+    {
+        cleanup_queue.Enqueue(sender.gameObject);
+        GameStats.ChangeCharacterCount(sender, -1);
+    }
+
+    private void Update()
+    {
+        foreach (GameObject g in cleanup_queue)
+        {
+            Destroy(g, 0.5f);
+        }
+
+        cleanup_queue.Clear();
     }
 }

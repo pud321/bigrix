@@ -3,21 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class NavMeshMoveAction : AbstractAction
+public class NavMeshMoveAction : AbstractAction, IMovementAction
 {
     private NavMeshAgent _navmeshagent;
     private ITargeting _targeting;
     private float _retreat_wiggle;
 
-    public NavMeshMoveAction(NavMeshAgent _navmeshagent) : this(_navmeshagent, 0f) { }
-
-    public NavMeshMoveAction(NavMeshAgent _navmeshagent, float _range)
+    public NavMeshMoveAction(NavMeshAgent _navmeshagent)
     {
         this._navmeshagent = _navmeshagent;
         _this_transform = _navmeshagent.transform;
-        this._range = _range;
-        this._action_period = 0f;
-        this._execution_time = 0.1f;
+        this.frequency = 0f;
         this._action_type = ActionType.Attack;
         this._retreat_wiggle = 0.5f * _range;
     }
@@ -75,9 +71,14 @@ public class NavMeshMoveAction : AbstractAction
         }
     }
 
-    public override void SetTargets(List<AbstractCharacter> targets)
+    public override void SetTargets(List<CharacterManager> targets)
     {
         _targets = targets;
         _targeting = new NearestTarget(_this_transform, _targets, 1f);
+    }
+
+    public void UpdateRange(float updated_range)
+    {
+        _range = updated_range;
     }
 }

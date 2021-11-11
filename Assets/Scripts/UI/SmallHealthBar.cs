@@ -1,59 +1,64 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SmallHealthBar : MonoBehaviour
+public class SmallHealthBar : MonoBehaviour, ICharacterTracker
 {
 
-    [SerializeField] GameObject health_bar;
-    [SerializeField] GameObject bar_full_container;
+    [SerializeField] private GameObject health_bar;
+    [SerializeField] protected GameObject bar_width_container;
+
+    protected CharacterManager _character_obj;
 
     private RectTransform _inner_bar;
+    private RectTransform _outer_bar;
+
     private Image _inner_bar_color;
-    private AbstractCharacter _character_obj;
-    private Transform _camera_transform;
     private float _initial_width;
 
     private Color high_color = new Color(0.05f, 1f, 0.1f);
     private Color low_color = new Color(1f, 0.05f, 0.1f);
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _inner_bar = health_bar.GetComponent<RectTransform>();
+        _outer_bar = bar_width_container.GetComponent<RectTransform>();
         _inner_bar_color = health_bar.GetComponent<Image>();
-        _character_obj = GetComponentInParent<AbstractCharacter>();
-        _camera_transform = Camera.main.transform;
     }
 
-    private void Start()
+    protected virtual void Start()
     {
-        _initial_width = _inner_bar.sizeDelta.x;
-        _character_obj.OnCharacterHealth += _SetBarRaw;
-        _SetBar(_character_obj.health_percent);
+        _initial_width = _outer_bar.sizeDelta.x;
+
     }
 
-    private void _SetBar(float bar_percent)
+    protected virtual void SetBar(float bar_percent)
     {
-        bool isActive = bar_percent < 1;
-        bar_full_container.SetActive(isActive);
-
-        if (isActive)
+        if (_initial_width == 0f)
         {
-            float current_width = Mathf.Lerp(0f, _initial_width, bar_percent);
-            Color lerp_color = Color.Lerp(low_color, high_color, bar_percent);
-            _inner_bar.sizeDelta = new Vector2(current_width, _inner_bar.sizeDelta.y);
-            _inner_bar_color.color = lerp_color;
+            _initial_width = _outer_bar.sizeDelta.x;
         }
+
+        float current_width = Mathf.Lerp(0f, _initial_width, bar_percent);
+        Color lerp_color = Color.Lerp(low_color, high_color, bar_percent);
+        _inner_bar.sizeDelta = new Vector2(current_width, _inner_bar.sizeDelta.y);
+        _inner_bar_color.color = lerp_color;
     }
 
-    private void _SetBarRaw(object o, DamageEventArgs e)
+    private void SetBarRaw(object o, DamageEventArgs e)
     {
-        _SetBar(_character_obj.health_percent);
+        SetBar(_character_obj.health_percent);
     }
 
-    private void Update()
+    public void SetTracking(CharacterManager tracked_character)
     {
-        this.transform.LookAt(_camera_transform);
+        _character_obj = tracked_character;
+        SetBarTracking();
     }
+
+    protected void SetBarTracking()
+    {
+        _character_obj.OnCharacterHealth += SetBarRaw;
+        SetBar(_character_obj.health_percent);
+    }
+
 }

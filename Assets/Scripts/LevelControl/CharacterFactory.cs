@@ -1,37 +1,60 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class CharacterFactory : MonoBehaviour
 {
-    [SerializeField]
-    public List<GameObject> character_prefabs;
+    public GameObject character_prefab;
 
-    public Dictionary<CharacterEnums, GameObject> character_dictionary;
     private float spawn_tolerance = 1f;
 
-    private void Awake()
-    {
-        character_dictionary = new Dictionary<CharacterEnums, GameObject>();
+    //public CharacterManager SpawnCharacter(SpawnDefinition details)
+    //{
+    //    NavMeshHit hit;
+    //    bool isHit = NavMesh.SamplePosition(details.spawn_position, out hit, spawn_tolerance, NavMesh.AllAreas);
 
-        foreach (GameObject g in character_prefabs)
-        {
-            character_dictionary.Add(g.GetComponent<AbstractCharacter>().character_type, g);
-        }
-        
-    }
+    //    if (isHit)
+    //    {
+    //        GameObject g = Instantiate(character_prefab, hit.position, Quaternion.identity);
+    //        CharacterManager current_spawn = g.GetComponent<CharacterManager>();
+    //        current_spawn.is_enemy = details.is_enemy;
 
-    public GameObject SpawnCharacter(CharacterEnums identifier, Vector3 position)
-    {
-        NavMeshHit hit;
-        bool isHit = NavMesh.SamplePosition(position, out hit, spawn_tolerance, NavMesh.AllAreas);
+    //        current_spawn.SetupCharacterData(details.info);
+    //        return current_spawn;
+    //    }
 
-        if (isHit && character_dictionary.ContainsKey(identifier))
-        {
-            return Instantiate(character_dictionary[identifier], hit.position, Quaternion.identity);
-        }
+    //    return null;
+    //}
 
-        return null;
-    }
+
+    //public PlayerCharacterManager SpawnPlayerCharacter(SpawnDefinition<PlayerCharacterData> details)
+    //{
+    //    NavMeshHit hit;
+    //    bool isHit = NavMesh.SamplePosition(details.spawn_position, out hit, spawn_tolerance, NavMesh.AllAreas);
+
+    //    if (isHit)
+    //    {
+    //        GameObject g = Instantiate(character_prefab, hit.position, Quaternion.identity);
+    //        PlayerCharacterManager current_spawn = g.AddComponent<PlayerCharacterManager>();
+    //        current_spawn.SetupCharacterData(details.info);
+    //        return current_spawn;
+    //    }
+
+    //    return null;
+    //}
+
+    //public EnemyCharacterManager SpawnEnemyCharacter(SpawnDefinition<EnemyCharacterData> details)
+    //{
+    //    NavMeshHit hit;
+    //    bool isHit = NavMesh.SamplePosition(details.spawn_position, out hit, spawn_tolerance, NavMesh.AllAreas);
+
+    //    if (isHit)
+    //    {
+    //        GameObject g = Instantiate(character_prefab, hit.position, Quaternion.identity);
+    //        EnemyCharacterManager current_spawn = g.AddComponent<EnemyCharacterManager>();
+    //        current_spawn.SetupCharacterData(details.info);
+    //        return current_spawn;
+    //    }
+
+    //    return null;
+    //}
 }
