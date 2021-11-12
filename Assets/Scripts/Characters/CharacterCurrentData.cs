@@ -22,7 +22,7 @@ public class CharacterCurrentData : ICharacterData
         return new NavMeshMoveAction(this_transform.GetComponent<NavMeshAgent>());
     }
 
-    public int max_health
+    public virtual int max_health
     {
         get
         {
@@ -39,7 +39,7 @@ public class CharacterCurrentData : ICharacterData
 
     }
 
-    public int base_damage
+    public virtual int base_damage
     {
         get
         {

@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (GameObject g in cleanup_queue)
         {
-            Destroy(g, 0.5f);
+            Destroy(g, 0.1f);
         }
 
         cleanup_queue.Clear();

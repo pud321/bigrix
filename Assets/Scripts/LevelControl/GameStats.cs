@@ -9,7 +9,14 @@ public static class GameStats
     public static int player_characters_count;
     public static int enemy_characters_count;
     public static int current_level;
+    public static uint max_level = 20;
 
+    // Experience system
+    public static ExperienceSystem experience_system;
+    public static readonly float scaling_factor = 1.5f;
+    public static readonly float shift = 10f;
+
+    // Time Variables
     private static long time_checkpoint;
     private static long _elapsed_time;
     private static bool isTimerRunning;
@@ -21,6 +28,7 @@ public static class GameStats
         player_characters_count = 0;
         enemy_characters_count = 0;
         current_level = 1;
+        experience_system = new ExperienceSystem(scaling_factor, shift);
     }
 
     public static void StartTime()
@@ -79,4 +87,5 @@ public static class GameStats
 
         return (float)temp_output / 10000000f;
     }
+
 }

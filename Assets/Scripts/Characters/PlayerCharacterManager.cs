@@ -8,7 +8,7 @@ public class PlayerCharacterManager : CharacterManager
 
     public event ManagerEventSender<PlayerCharacterManager> OnDeath;
 
-    public new bool is_enemy = false;
+    public override bool is_enemy { get { return false; } }
 
     public void SetupCharacterData(PlayerCharacterData character_data)
     {

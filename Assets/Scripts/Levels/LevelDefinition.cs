@@ -19,8 +19,8 @@ public static class LevelDefinition
         temp_data.AddStart(3.15f, 1f, -4.22f);
         temp_data.AddStart(0f, 1f, -1.49f);
         temp_data.AddStart(2.2f, 1f, -2.49f);
-        temp_data.AddEnemySpawn(CharacterEnums.Enemy, new Vector3(0f, 0.6f, 2f), 10);
-        temp_data.AddEnemySpawn(CharacterEnums.Enemy, new Vector3(1f, 0.6f, 3.3f), 20);
+        temp_data.AddEnemySpawn(CharacterEnums.Enemy, new Vector3(0f, 0.6f, 2f), 20);
+        temp_data.AddEnemySpawn(CharacterEnums.Enemy, new Vector3(1f, 0.6f, 3.3f), 30);
         Add(temp_data);
 
     }

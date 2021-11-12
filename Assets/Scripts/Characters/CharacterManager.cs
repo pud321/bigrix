@@ -6,8 +6,8 @@ public abstract class CharacterManager : MonoBehaviour
 {
     public Transform _this_transform;
     public int current_health;
-    public bool is_enemy;
-    
+    public abstract bool is_enemy { get; }
+
     public delegate void CharacterDamageHandler(CharacterManager sender, DamageEventArgs e);
     public event CharacterDamageHandler OnCharacterHealth;
     public event ManagerEventSender<CharacterManager> OnDeathGeneral;
