@@ -17,12 +17,15 @@ public static class CharacterDefinitions
                 max_health = 100,
                 basic_attack = new ActionData
                 {
-                    frequency = 6f,
+                    frequency = 0.17f,
                     damage = 10,
                     range = 1f,
                     action_type = ActionType.Attack,
                     damage_type = DamageType.Normal,
-                }
+                },
+                levelup_damage = 5,
+                levelup_maxhealth = 20,
+                levelup_movement = 0.1f
             }
         );
         Add(
@@ -34,12 +37,14 @@ public static class CharacterDefinitions
                 max_health = 50,
                 basic_attack = new ActionData
                 {
-                    frequency = 6f,
+                    frequency = 0.17f,
                     damage = 20,
                     range = 1f,
                     action_type = ActionType.Attack,
                     damage_type = DamageType.Normal,
-                }
+                },
+                levelup_damage = 10,
+                levelup_maxhealth = 10
             }
         );
         Add(
@@ -51,12 +56,12 @@ public static class CharacterDefinitions
                 max_health = 75,
                 basic_attack = new ActionData
                 {
-                    frequency = 6f,
+                    frequency = 0.17f,
                     damage = 15,
                     range = 1f,
                     action_type = ActionType.Attack,
                     damage_type = DamageType.Normal,
-                }
+                },
             }
         );
     }
@@ -69,20 +74,6 @@ public static class CharacterDefinitions
     public static CharacterFixedData Get(CharacterEnums type)
     {
         CharacterFixedData class_in = data[type];
-        return new CharacterFixedData
-        {
-            type = class_in.type,
-            name = class_in.name,
-            base_movement_speed = class_in.base_movement_speed,
-            max_health = class_in.max_health,
-            basic_attack = new ActionData
-            {
-                frequency = class_in.basic_attack.frequency,
-                damage = class_in.basic_attack.damage,
-                range = class_in.basic_attack.range,
-                action_type = class_in.basic_attack.action_type,
-                damage_type = class_in.basic_attack.damage_type,
-            }
-        };
+        return class_in.GetCopy();
     }
 }

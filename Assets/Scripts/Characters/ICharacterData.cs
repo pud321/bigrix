@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface ICharacterData
 {
-    CharacterFixedData fixed_data { get; set; }
+    CharacterFixedData fixed_data { get; }
     IAction GetBasicAttack(Transform this_transform);
     NavMeshMoveAction GetMovement(Transform this_transform);
     int max_health { get; }

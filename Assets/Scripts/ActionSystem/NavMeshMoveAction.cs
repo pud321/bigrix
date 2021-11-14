@@ -9,6 +9,8 @@ public class NavMeshMoveAction : AbstractAction, IMovementAction
     private ITargeting _targeting;
     private float _retreat_wiggle;
 
+    public event BooleanAnimationEventHandler OnAnimationChangeRequest;
+
     public NavMeshMoveAction(NavMeshAgent _navmeshagent)
     {
         this._navmeshagent = _navmeshagent;
@@ -37,7 +39,7 @@ public class NavMeshMoveAction : AbstractAction, IMovementAction
         {
             _navmeshagent.destination = desired_target.position;
         }
-        else if (target_distance < _range)
+        else if (1.5*target_distance < _range)
         {
             _navmeshagent.destination = _SetRetreatPosition(desired_target.position);
         }

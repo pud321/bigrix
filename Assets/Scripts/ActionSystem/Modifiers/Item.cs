@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Item
 {
     public string name;
 
-    public int damage = 0;
-    public float damage_percent = 0f;
-    public float range = 0f;
-    public float frequency_percent = 0f;
+    private int damage = 0;
+    private float damage_percent = 0f;
+    private float range = 0f;
+    private float frequency_percent = 0f;
 
     public Item(string name)
     {

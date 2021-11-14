@@ -1,4 +1,4 @@
-public interface ICharacterTracker
+public interface ICharacterTracker<T> where T: CharacterManager
 {
-    void SetTracking(CharacterManager tracked_character);
+    void SetTracking(T tracked_character);
 }

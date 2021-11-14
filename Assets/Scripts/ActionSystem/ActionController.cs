@@ -16,14 +16,16 @@ public class ActionController
 
     private List<CharacterManager> _ally_characters;
     private List<CharacterManager> _enemy_characters;
+    private CharacterAnimationController animation_controller;
 
-    public ActionController(List<CharacterManager> allys, List<CharacterManager> enemies)
+    public ActionController(List<CharacterManager> allys, List<CharacterManager> enemies, CharacterAnimationController animation_controller)
     {
         skilled_action = new IAction[_total_actions];
         action_history = new Queue<IAction>();
 
         _ally_characters = allys;
         _enemy_characters = enemies;
+        this.animation_controller = animation_controller;
     }
 
     public void UpdateSkilledAction(IAction action, int slot)
@@ -38,6 +40,7 @@ public class ActionController
         basic_action = action;
         movement_action.UpdateRange(GetMinimumRange());
         SetActionTargets(action);
+        basic_action.OnAnimationChangeRequest += AnimationChangeRequest;
     }
 
     public void AddMovementAction(NavMeshMoveAction action)
@@ -73,7 +76,12 @@ public class ActionController
 
         next_action.RunAction();
         last_action = next_action;
-        return 3f;
+        return 1f;
+    }
+
+    private void AnimationChangeRequest(string name)
+    {
+        animation_controller.RunDiscreteAnimation(name);
     }
 
     private void AddActionToQueue(IAction action)
@@ -94,7 +102,7 @@ public class ActionController
 
         foreach (IAction action in skilled_action)
         {
-            if (action == null)
+            if (action == null || !action.CanRunAction())
             {
                 continue;
             }

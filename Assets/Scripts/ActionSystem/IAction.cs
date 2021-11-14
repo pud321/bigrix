@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public delegate void BooleanAnimationEventHandler(string s);
+
+
 public interface IAction
 {
     void RunAction();
@@ -12,4 +15,7 @@ public interface IAction
     float range { get; }
     float timeRemaining { get; }
     ActionType action_type { get; }
+
+    event BooleanAnimationEventHandler OnAnimationChangeRequest;
+
 }

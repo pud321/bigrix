@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SmallHealthBar : MonoBehaviour, ICharacterTracker
+public class SmallHealthBar : MonoBehaviour, ICharacterTracker<CharacterManager>
 {
 
     [SerializeField] private GameObject health_bar;
@@ -15,8 +15,8 @@ public class SmallHealthBar : MonoBehaviour, ICharacterTracker
     private Image _inner_bar_color;
     private float _initial_width;
 
-    private Color high_color = new Color(0.05f, 1f, 0.1f);
-    private Color low_color = new Color(1f, 0.05f, 0.1f);
+    protected Color high_color = new Color(0.05f, 1f, 0.1f, 1f);
+    protected Color low_color = new Color(1f, 0.05f, 0.1f, 1f);
 
     protected virtual void Awake()
     {

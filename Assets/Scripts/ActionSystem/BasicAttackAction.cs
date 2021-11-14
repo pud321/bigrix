@@ -1,26 +1,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class BasicAttackAction : AbstractAction, IAction
 {
+
+    public event BooleanAnimationEventHandler OnAnimationChangeRequest;
+
     private ITargeting _targeting;
-    private int damage;
     private DamageType damage_type;
+    private IActionData data;
+    private string animation_name = "Attack";
 
-
-    public BasicAttackAction(Transform this_tranform, ActionData data)
+    public BasicAttackAction(Transform this_tranform, IActionData data)
     {
+        this.data = data;
         this._range = data.range;
         this.frequency = data.frequency;
-        this._action_type = data.action_type;
-        this.damage_type = data.damage_type;
+        //this._action_type = data.action_type;
+        //this.damage_type = data.damage_type;
         _this_transform = this_tranform;
-        this.damage = -data.damage;
     }
 
     public override bool CanRunAction()
     {
-        return (IsActionTimerReady() && IsInRange());
+        return (IsActionTimerReady() && IsInRange() && IsFacingTarget());
     }
 
     public override Transform DesiredTarget()
@@ -34,10 +38,10 @@ public class BasicAttackAction : AbstractAction, IAction
 
         if (target_transform != _this_transform)
         {
+            OnAnimationChangeRequest?.Invoke(animation_name);
             CharacterManager desired_target = target_transform.GetComponent<CharacterManager>();
-            int temp_damage = damage;
-            desired_target.ChangeHealth(temp_damage, damage_type);
-            _next_action_time = Time.time + frequency;
+            desired_target.ChangeHealth(-data.damage, damage_type);
+            _next_action_time = Time.time + 1/frequency;
         }
     }
 
