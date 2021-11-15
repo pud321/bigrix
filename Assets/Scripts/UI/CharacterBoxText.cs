@@ -1,10 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterBoxText : MonoBehaviour, ICharacterTracker
+public class CharacterBoxText : MonoBehaviour, ICharacterTracker<CharacterManager>
 {
     [SerializeField] public Text name_display;
     [SerializeField] public Text damage_field;
+    [SerializeField] public Text level;
 
     public void SetTracking(CharacterManager tracked_character)
     {
@@ -22,4 +23,9 @@ public class CharacterBoxText : MonoBehaviour, ICharacterTracker
     {
         //damage_field.text = "RIP";
     }
+
+    public void UpdateCharacterLevel(int i)
+    {
+        level.text = i.ToString();
+    } 
 }

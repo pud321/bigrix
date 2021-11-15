@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterBoxAppearance : MonoBehaviour, ICharacterTracker
+public class CharacterBoxAppearance : MonoBehaviour, ICharacterTracker<CharacterManager>
 {
     private Image box_background;
     private Color alive_color = new Color(0.95f, 0.95f, 0.95f);

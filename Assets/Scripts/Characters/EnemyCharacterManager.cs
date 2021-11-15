@@ -7,7 +7,8 @@ public class EnemyCharacterManager : CharacterManager
     public EnemyCharacterData enemy_character_data;
 
     public event ManagerEventSender<EnemyCharacterManager> OnDeath;
-    public new bool is_enemy = true;
+    public override bool is_enemy { get { return true; } }
+
 
     public void SetupCharacterData(EnemyCharacterData character_data)
     {

@@ -6,15 +6,16 @@ public abstract class CharacterManager : MonoBehaviour
 {
     public Transform _this_transform;
     public int current_health;
-    public bool is_enemy;
-    
+    public abstract bool is_enemy { get; }
+
     public delegate void CharacterDamageHandler(CharacterManager sender, DamageEventArgs e);
     public event CharacterDamageHandler OnCharacterHealth;
     public event ManagerEventSender<CharacterManager> OnDeathGeneral;
 
 
-    private NavMeshAgent _navmeshagent;
+    protected NavMeshAgent _navmeshagent;
     private ActionController _action_controller;
+    private CharacterAnimationController _animation_controller;
 
     public ICharacterData character_data;
     protected bool hold_check_and_destroy;
@@ -24,6 +25,8 @@ public abstract class CharacterManager : MonoBehaviour
     protected void Awake()
     {
         _navmeshagent = GetComponent<NavMeshAgent>();
+        _animation_controller = GetComponent<CharacterAnimationController>();
+
         _this_transform = this.transform;
         hold_check_and_destroy = false;
     }
@@ -77,12 +80,13 @@ public abstract class CharacterManager : MonoBehaviour
 
     protected void RunGeneralEvents()
     {
+        _animation_controller.RunDiscreteAnimation("React");
         OnDeathGeneral?.Invoke(this);
     }
 
     public void SetTargets(List<CharacterManager> allys, List<CharacterManager> enemies)
     {
-        _action_controller = new ActionController(allys, enemies);
+        _action_controller = new ActionController(allys, enemies, _animation_controller);
         SetActions();
     }
 

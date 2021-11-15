@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public abstract class AbstractAction
 {
     public ActionType action_type { get { return _action_type; } }
@@ -30,6 +31,28 @@ public abstract class AbstractAction
 
     protected bool IsInRange()
     {
-        return _range >= Vector3.Distance(DesiredTarget().position, _this_transform.position);
+        RaycastHit[] hits;
+        Vector3 normalized_direction = (DesiredTarget().position - _this_transform.position).normalized;
+        hits = Physics.RaycastAll(_this_transform.position, normalized_direction, range);
+
+        Transform desired_target = DesiredTarget();
+
+        foreach (RaycastHit hit in hits)
+        {
+            if (hit.transform == desired_target)
+            {
+                return true;
+            }
+
+        }
+        return false;
     }
+
+    protected bool IsFacingTarget()
+    {
+        Transform desired_target = DesiredTarget();
+        _this_transform.LookAt(desired_target);
+        return true;
+    }
+
 }

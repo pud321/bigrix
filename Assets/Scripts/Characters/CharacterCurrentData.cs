@@ -3,18 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+
+[System.Serializable]
 public class CharacterCurrentData : ICharacterData
 {
-    public CharacterFixedData fixed_data { get; set; }
+    public CharacterFixedData fixed_data { get { return _fixed_data; } }
+    public CharacterFixedData _fixed_data;
+    public ActionDataGroup basic_attack_group { get; set; }
 
     public CharacterCurrentData(CharacterEnums type)
     {
-        fixed_data = CharacterDefinitions.Get(type);
+        _fixed_data = CharacterDefinitions.Get(type);
+        basic_attack_group = new ActionDataGroup();
+        basic_attack_group.AddAction(fixed_data.basic_attack);
     }
 
     public IAction GetBasicAttack(Transform this_transform)
     {
-        return new BasicAttackAction(this_transform, fixed_data.basic_attack);
+        return new BasicAttackAction(this_transform, basic_attack_group);
     }
 
     public NavMeshMoveAction GetMovement(Transform this_transform)
@@ -22,7 +28,7 @@ public class CharacterCurrentData : ICharacterData
         return new NavMeshMoveAction(this_transform.GetComponent<NavMeshAgent>());
     }
 
-    public int max_health
+    public virtual int max_health
     {
         get
         {
@@ -39,11 +45,11 @@ public class CharacterCurrentData : ICharacterData
 
     }
 
-    public int base_damage
+    public virtual int base_damage
     {
         get
         {
-            return fixed_data.basic_attack.damage;
+            return basic_attack_group.damage;
         }
     }
 
