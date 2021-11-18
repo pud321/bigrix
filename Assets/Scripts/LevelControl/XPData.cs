@@ -15,6 +15,7 @@ public class XPData
     {
         level = 1;
         xp = 0;
+        next_xp = 1;
     }
 
     public float LevelFraction()

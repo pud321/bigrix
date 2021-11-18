@@ -12,7 +12,7 @@ public class EnemyCharacterSpawner : AbstractCharacterSpawner<EnemyCharacterMana
 
     public void SpawnGroup()
     {
-        List<EnemySpawnDefinition> level_spawn_data = LevelDefinition.data[GameStats.current_level].enemy_spawn_data;
+        List<EnemySpawnDefinition> level_spawn_data = LevelController.GetCurrentEnemySpawn();
 
         foreach (EnemySpawnDefinition spawn_definition in level_spawn_data)
         {

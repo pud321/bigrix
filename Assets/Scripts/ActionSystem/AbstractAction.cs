@@ -21,7 +21,11 @@ public abstract class AbstractAction
 
     public abstract void RunAction();
     public abstract void StopAction();
-    public abstract bool CanRunAction();
+    public virtual bool CanRunAction()
+    {
+        return (IsActionTimerReady() && IsInRange() && IsFacingTarget());
+    }
+
     public abstract Transform DesiredTarget();
 
     protected bool IsActionTimerReady()
@@ -29,7 +33,7 @@ public abstract class AbstractAction
         return Time.time >= _next_action_time;
     }
 
-    protected bool IsInRange()
+    protected virtual bool IsInRange()
     {
         RaycastHit[] hits;
         Vector3 normalized_direction = (DesiredTarget().position - _this_transform.position).normalized;

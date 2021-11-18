@@ -12,7 +12,7 @@ public class PlayerCharacterSpawner : AbstractCharacterSpawner<PlayerCharacterMa
 
     public void SpawnGroup(List<PlayerCharacterData> player_array)
     {
-        List<Vector3> level_starts = LevelDefinition.data[GameStats.current_level].GetPlayerRndStarts();
+        List<Vector3> level_starts = LevelController.GetRandomPlayerStarts();
 
         for (int i = 0; i < player_array.Count; i++)
         {

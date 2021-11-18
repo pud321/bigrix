@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SmallHealthBar : MonoBehaviour, ICharacterTracker<CharacterManager>
+public class SmallHealthBar : MonoBehaviour, ICharacterTracker<CharacterManager>, ICharacterDataTracker
 {
 
     [SerializeField] private GameObject health_bar;
@@ -53,6 +53,11 @@ public class SmallHealthBar : MonoBehaviour, ICharacterTracker<CharacterManager>
     {
         _character_obj = tracked_character;
         SetBarTracking();
+    }
+
+    public void SetPlayerData(PlayerCharacterData tracked_character)
+    {
+        SetBar(1);
     }
 
     protected void SetBarTracking()

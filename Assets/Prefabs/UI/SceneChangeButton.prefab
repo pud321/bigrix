@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 8865856640926534176}
   - component: {fileID: 8865856640926534191}
   - component: {fileID: 8865856640926534190}
-  - component: {fileID: 8865856640926534189}
   m_Layer: 5
   m_Name: SceneChangeButton
   m_TagString: Untagged
@@ -122,30 +121,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8865856640926534189}
-        m_TargetAssemblyTypeName: SceneChanger, Scripts
-        m_MethodName: ChangeScene
-        m_Mode: 5
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: BaseManager, Scripts
+        m_MethodName: RunSceneChange
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Homebase
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &8865856640926534189
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8865856640926534187}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2fc3acec5ce687640a6d994464461740, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8865856641122374441
 GameObject:
   m_ObjectHideFlags: 0
@@ -224,4 +211,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Return
+  m_Text: Forest

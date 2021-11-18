@@ -5,11 +5,20 @@ using UnityEngine;
 
 public static class GameStats
 {
+    public static int save_slot_number = 1;
+    public static LevelEnums current_level;
+
     public static float elapsed_time { get { return GetTime(); } }
     public static int player_characters_count;
     public static int enemy_characters_count;
-    public static int current_level;
     public static uint max_level = 20;
+
+    public static int max_characters = 5;
+    public static CharacterEnums[] player_character_types = new CharacterEnums[] {
+        CharacterEnums.Fighter, 
+        CharacterEnums.Mage,
+        CharacterEnums.Priest,
+    };
 
     // Experience system
     public static ExperienceSystem experience_system;
@@ -21,14 +30,23 @@ public static class GameStats
     private static long _elapsed_time;
     private static bool isTimerRunning;
 
+
+    private static PersistantGameData game_data;
+
     public static void Initialize()
     {
         _elapsed_time = 0;
         isTimerRunning = false;
         player_characters_count = 0;
         enemy_characters_count = 0;
-        current_level = 1;
         experience_system = new ExperienceSystem(scaling_factor, shift);
+        game_data = new PersistantGameData();
+        game_data.Load();
+    }
+
+    public static void SaveAll()
+    {
+        game_data.Save();
     }
 
     public static void StartTime()

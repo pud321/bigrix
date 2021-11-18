@@ -125,6 +125,9 @@ public class ActionController
             case ActionType.Attack: 
                 action.SetTargets(_enemy_characters);
                 break;
+            case ActionType.Heal:
+                action.SetTargets(_ally_characters);
+                break;
             default:
                 break;
         }

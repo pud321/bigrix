@@ -10,7 +10,7 @@ public class CharacterInventory : MonoBehaviour
     public List<PlayerCharacterData> data;
     public List<ICharacterData> generic_data;
 
-    private void Awake()
+    protected void Awake()
     {
         data = new List<PlayerCharacterData>();
         generic_data = new List<ICharacterData>();
@@ -37,7 +37,8 @@ public class CharacterInventory : MonoBehaviour
         bool reload_success = reloaded_character != null;
         if (reload_success)
         {
-            PlayerCharacterData regenerated_character = reloaded_character.RemakeCharacter();
+            PlayerCharacterData regenerated_character = SelectCharacterObject(reloaded_character.character_type);
+            regenerated_character.RemakeCharacter(reloaded_character);
             TrackNew(regenerated_character);
         }
 
@@ -46,7 +47,7 @@ public class CharacterInventory : MonoBehaviour
 
     public void AddNew(CharacterEnums type, int level)
     {
-        PlayerCharacterData temp_data = new PlayerCharacterData(type, 1);
+        PlayerCharacterData temp_data = SelectCharacterObject(type);
         TrackNew(temp_data);
     }
 
@@ -62,5 +63,20 @@ public class CharacterInventory : MonoBehaviour
     {
         data.Add(temp_data);
         generic_data.Add(temp_data);
+    }
+
+    protected virtual PlayerCharacterData SelectCharacterObject(CharacterEnums type)
+    {
+        switch (type)
+        {
+            case CharacterEnums.Fighter:
+                return new Fighter();
+            case CharacterEnums.Mage:
+                return new Mage(null);
+            case CharacterEnums.Priest:
+                return new Priest();
+            default:
+                return null;
+        }
     }
 }

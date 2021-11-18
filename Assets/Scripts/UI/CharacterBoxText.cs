@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterBoxText : MonoBehaviour, ICharacterTracker<CharacterManager>
+public class CharacterBoxText : MonoBehaviour, ICharacterTracker<CharacterManager>, ICharacterDataTracker
 {
     [SerializeField] public Text name_display;
     [SerializeField] public Text damage_field;
@@ -14,6 +14,13 @@ public class CharacterBoxText : MonoBehaviour, ICharacterTracker<CharacterManage
         tracked_character.OnCharacterHealth += UpdateCharacterHealth;
         tracked_character.OnDeathGeneral += ShowCharacterDeath;
     }
+
+    public void SetPlayerData(PlayerCharacterData data)
+    {
+        name_display.text = data.name;
+        UpdateCharacterLevel((int)data.experience.level);
+    }
+
     private void UpdateCharacterHealth(CharacterManager sender, DamageEventArgs e)
     {
         //damage_field.text = "Damage:" + e.damage_value.ToString();

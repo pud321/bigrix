@@ -1,10 +1,29 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class SceneChanger : MonoBehaviour
 {
-    public void ChangeScene(string scene_name)
+    private Dictionary<LevelEnums, string> scene_names;
+    private string base_string = "Homebase";
+
+    public SceneChanger()
     {
-        SceneManager.LoadScene(scene_name);
+        scene_names = new Dictionary<LevelEnums, string>()
+        {
+            { LevelEnums.Forest, "ExampleLevel" },
+            { LevelEnums.Plains, "PlainsLevel" }
+        };
+    }
+
+    public void ChangeToBase()
+    {
+        SceneManager.LoadScene(base_string);
+    }
+
+    public void ChangeSceneToLevel(LevelEnums scene_name)
+    {
+        string scene_string = scene_names[scene_name];
+        SceneManager.LoadScene(scene_string);
     }
 }

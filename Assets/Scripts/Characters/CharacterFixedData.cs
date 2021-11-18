@@ -44,28 +44,6 @@ public class CharacterFixedData
         OnMovementSpeedChange?.Invoke(delta);
     }
 
-    public CharacterFixedData GetCopy()
-    {
-        return new CharacterFixedData
-        {
-            type = this.type,
-            name = this.name,
-            base_movement_speed = this.base_movement_speed,
-            max_health = this.max_health,
-            basic_attack = new ActionData
-            {
-                frequency = this.basic_attack.frequency,
-                damage = this.basic_attack.damage,
-                range = this.basic_attack.range,
-                action_type = this.basic_attack.action_type,
-                damage_type = this.basic_attack.damage_type,
-            },
-            levelup_damage = this.levelup_damage,
-            levelup_maxhealth = this.levelup_maxhealth,
-            levelup_movement = this.levelup_movement,
-        };
-    }
-
     public void RunLevelUp()
     {
         ChangeMaxHealth(levelup_maxhealth);

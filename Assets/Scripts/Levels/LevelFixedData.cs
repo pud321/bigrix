@@ -2,20 +2,19 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct LevelFixedData
+public class LevelFixedData
 {
-    public string name;
-    public int number;
+    public LevelEnums name;
     public List<Vector3> level_player_starts;
     public List<EnemySpawnDefinition> enemy_spawn_data;
+    public LevelEnums[] unlocks_levels = new LevelEnums[] { LevelEnums.Plains };
 
     public List<ICharacterData> generic_enemy_data;
     public List<EnemyCharacterData> enemy;
 
-    public LevelFixedData(string name, int number)
+    public LevelFixedData(LevelEnums name)
     {
         this.name = name;
-        this.number = number;
         this.level_player_starts = new List<Vector3>();
         enemy_spawn_data = new List<EnemySpawnDefinition>();
         generic_enemy_data = new List<ICharacterData>();
@@ -31,14 +30,14 @@ public struct LevelFixedData
         level_player_starts.Add(new Vector3(x, y, z));
     }
 
-    public void AddEnemySpawn(CharacterEnums type, Vector3 start_position, uint reward_experience)
+    public void AddEnemySpawn(CharacterEnums type, Vector3 start_position)
     {
         if (enemy_spawn_data == null)
         {
             CreateEmptyLists();
         }
 
-        EnemyCharacterData temp_enemy_data = new EnemyCharacterData(type, reward_experience, false);
+        EnemyCharacterData temp_enemy_data = new BasicEnemy();
         generic_enemy_data.Add(temp_enemy_data);
         enemy.Add(temp_enemy_data);
 

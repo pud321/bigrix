@@ -22,11 +22,6 @@ public class BasicAttackAction : AbstractAction, IAction
         _this_transform = this_tranform;
     }
 
-    public override bool CanRunAction()
-    {
-        return (IsActionTimerReady() && IsInRange() && IsFacingTarget());
-    }
-
     public override Transform DesiredTarget()
     {
         return _targeting.GetCurrentTarget();
