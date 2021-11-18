@@ -5,25 +5,30 @@ using UnityEngine.AI;
 
 
 [System.Serializable]
-public class CharacterCurrentData : ICharacterData
+public abstract class CharacterCurrentData : ICharacterData
 {
     public CharacterFixedData fixed_data { get { return _fixed_data; } }
     public CharacterFixedData _fixed_data;
     public ActionDataGroup basic_attack_group { get; set; }
 
-    public CharacterCurrentData(CharacterEnums type)
+    protected IActionData basic_attack_data;
+
+    public CharacterCurrentData()
     {
-        _fixed_data = CharacterDefinitions.Get(type);
         basic_attack_group = new ActionDataGroup();
-        basic_attack_group.AddAction(fixed_data.basic_attack);
     }
 
-    public IAction GetBasicAttack(Transform this_transform)
+    public void SetupAttackGroup()
+    {
+        basic_attack_group.AddAction(basic_attack_data);
+    }
+
+    public virtual IAction GetBasicAttack(Transform this_transform)
     {
         return new BasicAttackAction(this_transform, basic_attack_group);
     }
 
-    public NavMeshMoveAction GetMovement(Transform this_transform)
+    public virtual NavMeshMoveAction GetMovement(Transform this_transform)
     {
         return new NavMeshMoveAction(this_transform.GetComponent<NavMeshAgent>());
     }

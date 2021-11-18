@@ -62,4 +62,20 @@ public class ActionDataGroup : IActionData
             return temp;
         }
     }
+
+    public DamageType damage_type
+    {
+        get
+        {
+            return individual_action_data[0].damage_type;
+        }
+    }
+
+    public ActionType action_type
+    {
+        get
+        {
+            return individual_action_data[0].action_type;
+        }
+    }
 }

@@ -1,12 +1,17 @@
 public class EnemyCharacterData : CharacterCurrentData
 {
 
-    public bool drop_table;
+    public DropGenerator drop_generator;
     public uint reward_experience;
 
-    public EnemyCharacterData(CharacterEnums type, uint reward_experience, bool drop_table) : base(type)
+    public EnemyCharacterData(uint reward_experience, DropGenerator drops) : base()
     {
         this.reward_experience = reward_experience;
-        this.drop_table = drop_table;
+        this.drop_generator = drops;
+    }
+
+    public int GetDropMoney()
+    {
+        return drop_generator.GetMoney();
     }
 }

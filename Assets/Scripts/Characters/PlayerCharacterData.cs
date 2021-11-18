@@ -1,5 +1,5 @@
 using System;
-
+using UnityEngine;
 [Serializable]
 public class PlayerCharacterData : CharacterCurrentData
 {
@@ -15,24 +15,18 @@ public class PlayerCharacterData : CharacterCurrentData
     public event ManagerEventSender<PlayerCharacterData> OnLevelChange;
 
 
-    public PlayerCharacterData(CharacterEnums type, uint level) : base(type)
+    public PlayerCharacterData() : base()
     {
-        experience = new XPData
-        {
-            level = level,
-            xp = 0,
-            next_xp = 1
-        };
+        experience = new XPData();
         experience.OnLevelUp += AdvanceLevelListener;
-        inventory_controller = new ItemController(3);
-        leveling_action_data = new ActionData
-        {
-            frequency = 0f,
-            damage = 0,
-            range = 0f,
-            damage_type = fixed_data.basic_attack.damage_type,
-            action_type = fixed_data.basic_attack.action_type
-        };
+    }
+
+    public void SetupPlayerAttackGroup()
+    {
+        SetupAttackGroup();
+        leveling_action_data = new ActionData();
+        leveling_action_data.damage_type = basic_attack_group.damage_type;
+        leveling_action_data.action_type = basic_attack_group.action_type;
         basic_attack_group.AddAction(leveling_action_data);
     }
 
@@ -79,18 +73,15 @@ public class PlayerCharacterData : CharacterCurrentData
         OnLevelChange?.Invoke(this);
     }
 
-    public PlayerCharacterData RemakeCharacter()
+    public void RemakeCharacter(PlayerCharacterData character_data)
     {
-        PlayerCharacterData remade_character = new PlayerCharacterData(fixed_data.type, 1);
-
-        for (int i = 1; i < experience.level; i++)
+        for (int i = 1; i < character_data.experience.level; i++)
         {
-            remade_character.AdvanceLevelListener();
+            AdvanceLevelListener();
         }
 
-        remade_character.experience.xp = experience.xp;
-        remade_character.experience.level = experience.level;
-
-        return remade_character;
+        experience.xp = character_data.experience.xp;
+        experience.level = character_data.experience.level;
     }
+
 }
