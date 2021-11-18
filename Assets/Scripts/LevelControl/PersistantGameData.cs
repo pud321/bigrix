@@ -27,6 +27,10 @@ public class PersistantGameData
         {
             data.RestorePersistantData();
         }
+        else
+        {
+            SetDefaultPersistantData();
+        }
     }
 
     private void RetreivePersistantData()
@@ -39,5 +43,11 @@ public class PersistantGameData
     {
         MoneyData.total_money = current_money;
         LevelController.unlocked_levels = levels_unlocked;
+    }
+
+    private void SetDefaultPersistantData()
+    {
+        MoneyData.total_money = 0;
+        LevelController.unlocked_levels = new LevelEnums[] { LevelEnums.Forest };
     }
 }

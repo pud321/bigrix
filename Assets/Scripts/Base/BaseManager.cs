@@ -37,7 +37,11 @@ public class BaseManager : MonoBehaviour
         character_menu_ui.OnCreateCharacter += AcceptCharacterUnlock;
 
         character_loader.LoadSaved();
-        
+
+        if (character_inventory.data.Count == 0 && MoneyData.total_money == 0)
+        {
+            MoneyData.total_money = 500;
+        }
 
         foreach (PlayerCharacterData data in character_inventory.data)
         {
