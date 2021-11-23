@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 
 public class GameManager : MonoBehaviour
@@ -42,7 +40,7 @@ public class GameManager : MonoBehaviour
 
     public void DelegatePlayerSpawn(PlayerCharacterManager manager)
     {
-        character_inventory.SetCharacterContent(manager);
+        character_inventory.SetActiveContent(manager);
         GameStats.player_characters_count += 1;
     }
 
@@ -88,6 +86,7 @@ public class GameManager : MonoBehaviour
         character_loader.SaveAll();
         GameStats.SaveAll();
         MoneyData.ClearEvents();
+        AllInventoryLookup.ClearEvents();
 
         scene_changer.ChangeToBase();
     }

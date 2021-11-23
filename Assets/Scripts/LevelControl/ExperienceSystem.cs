@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public delegate void ExperienceEventHandler();
 
@@ -18,7 +16,7 @@ public class ExperienceSystem
 
         level_xp = new Dictionary<uint, uint>();
 
-        for (uint i=1; i < GameStats.max_level; i++)
+        for (uint i = 1; i < GameStats.max_level; i++)
         {
             level_xp[i] = GetXPNeeded(i);
         }

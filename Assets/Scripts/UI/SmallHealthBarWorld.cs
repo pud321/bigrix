@@ -15,7 +15,7 @@ public class SmallHealthBarWorld : SmallHealthBar
         _camera_transform = Camera.main.transform;
         high_color = new Color(0.05f, 1f, 0.1f, 0.6f);
         low_color = new Color(1f, 0.05f, 0.1f, 0.6f);
-}
+    }
 
     protected override void Start()
     {

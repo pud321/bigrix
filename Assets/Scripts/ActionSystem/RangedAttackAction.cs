@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,7 +11,7 @@ public class RangedAttackAction : AbstractAction, IAction
     private IActionData data;
     private string animation_name = "Attack";
     private ProjectileController projectile_control;
-    
+
     private CharacterManager current_target;
 
     public RangedAttackAction(Transform this_tranform, IActionData data, ProjectileController projectile_control)

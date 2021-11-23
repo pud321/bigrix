@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Events;
-using System;
 
 public delegate void SendCharacterTypeEventHander(CharacterEnums type);
 
@@ -26,7 +22,7 @@ public class SelectNewCharacterUI : MonoBehaviour
         exit_button = instantiated_menu.GetComponentInChildren<Button>();
 
         CloseCharacterMenu();
-        
+
         GameObject instantiated_prefab;
 
         foreach (CharacterEnums type in GameStats.player_character_types)

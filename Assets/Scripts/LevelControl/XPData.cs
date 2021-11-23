@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using System;
 
 [Serializable]
@@ -15,7 +12,7 @@ public class XPData
     {
         level = 1;
         xp = 0;
-        next_xp = 1;
+        next_xp = 0;
     }
 
     public float LevelFraction()
@@ -23,6 +20,11 @@ public class XPData
         if (level == GameStats.max_level)
         {
             return 1f;
+        }
+
+        if (next_xp == 0)
+        {
+            next_xp = NextXP();
         }
 
         return (float)xp / (float)next_xp;
@@ -47,7 +49,7 @@ public class XPData
         }
     }
 
-    private uint NextXP()
+    public uint NextXP()
     {
         return GameStats.experience_system.GetXPNeeded(level);
     }

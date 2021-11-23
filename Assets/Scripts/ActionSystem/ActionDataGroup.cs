@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class ActionDataGroup : IActionData
 {
@@ -21,8 +19,9 @@ public class ActionDataGroup : IActionData
         individual_action_data.Remove(data);
     }
 
-    public int damage { 
-        get 
+    public int damage
+    {
+        get
         {
             int temp = 0;
 

@@ -96,12 +96,12 @@ public abstract class CharacterManager : MonoBehaviour
         _action_controller.AddBasicAction(character_data.GetBasicAttack(_this_transform));
     }
 
-    public float health_percent 
-    { 
-        get 
-        { 
-            return (float)current_health / (float)character_data.max_health; 
-        } 
+    public float health_percent
+    {
+        get
+        {
+            return (float)current_health / (float)character_data.max_health;
+        }
     }
 
     public string name

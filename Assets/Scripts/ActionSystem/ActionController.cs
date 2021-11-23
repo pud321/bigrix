@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
 
 public class ActionController
 {
@@ -122,7 +120,7 @@ public class ActionController
     {
         switch (action.action_type)
         {
-            case ActionType.Attack: 
+            case ActionType.Attack:
                 action.SetTargets(_enemy_characters);
                 break;
             case ActionType.Heal:

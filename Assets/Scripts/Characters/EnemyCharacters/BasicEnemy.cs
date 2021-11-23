@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class BasicEnemy : EnemyCharacterData
 {
 
-    public BasicEnemy() : base(100, new DropGenerator(100, 200)) 
+    public BasicEnemy() : base(100, new DropGenerator(100, 200))
     {
         _fixed_data = new CharacterFixedData
         {

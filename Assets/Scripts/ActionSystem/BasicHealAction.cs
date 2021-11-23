@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -30,7 +29,7 @@ public class BasicHealAction : AbstractAction, IAction
     {
         Transform target_transform = DesiredTarget();
         CharacterManager desired_target = target_transform.GetComponent<CharacterManager>();
-        
+
         if (desired_target.health_percent < 1f)
         {
             OnAnimationChangeRequest?.Invoke(animation_name);
@@ -70,6 +69,6 @@ public class BasicHealAction : AbstractAction, IAction
     public override void SetTargets(List<CharacterManager> targets)
     {
         _targets = targets;
-        _targeting = new LowestTarget(_this_transform, _targets, 1f);
+        _targeting = new LowestHealthTarget(_this_transform, _targets, 1f);
     }
 }

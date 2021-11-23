@@ -12,7 +12,7 @@ public class CharacterAnimationController : MonoBehaviour
         nav_mesh = GetComponent<NavMeshAgent>();
     }
 
-    private void FixedUpdate() 
+    private void FixedUpdate()
     {
         m_animator.SetBool("Attack", false);
         m_animator.SetFloat("MoveSpeed", nav_mesh.velocity.magnitude);

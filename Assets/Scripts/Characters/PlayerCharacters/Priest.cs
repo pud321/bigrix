@@ -3,12 +3,10 @@ using UnityEngine.AI;
 
 public class Priest : PlayerCharacterData
 {
-    private int max_inventory_slots = 3;
+    protected override int max_inventory_slots { get { return 2; } }
 
     public Priest() : base()
     {
-        inventory_controller = new ItemController(max_inventory_slots);
-
         _fixed_data = new CharacterFixedData
         {
             type = CharacterEnums.Priest,

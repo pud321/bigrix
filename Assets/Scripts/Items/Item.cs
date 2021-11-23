@@ -1,20 +1,29 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
-[System.Serializable]
 public class Item
 {
     public string name;
+    public ItemEnum type;
+    public ItemRarityEnum rarity;
 
-    private int damage = 0;
-    private float damage_percent = 0f;
-    private float range = 0f;
-    private float frequency_percent = 0f;
+    public HashSet<CharacterEnums> characters;
 
-    public Item(string name)
+    public int damage = 0;
+    public float damage_percent = 0f;
+    public float range = 0f;
+    public float frequency_percent = 0f;
+
+    public Item(ItemEnum type, CharacterEnums[] characters)
     {
-        this.name = name;
+        this.type = type;
+        this.name = type.ToString();
+        this.characters = new HashSet<CharacterEnums>();
+
+        foreach (CharacterEnums c in characters)
+        {
+            this.characters.Add(c);
+        }
+
     }
 
     public float ShiftRange(float value)

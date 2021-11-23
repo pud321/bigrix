@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public delegate void MoneyChangeEventHandler(int change);
 public delegate void MoneyUpdateEventHandler();
 

@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public delegate void CharacterDataEventHandler<T>(T change);
 
 [System.Serializable]
@@ -17,13 +13,14 @@ public class CharacterFixedData
     public int levelup_damage = 0;
     public int levelup_maxhealth = 0;
     public float levelup_movement = 0f;
-    
+
     private int _max_health;
     private float _base_movement_speed;
 
-    public int max_health { 
-        get { return _max_health; } 
-        set { _max_health = value; } 
+    public int max_health
+    {
+        get { return _max_health; }
+        set { _max_health = value; }
     }
 
     public float base_movement_speed

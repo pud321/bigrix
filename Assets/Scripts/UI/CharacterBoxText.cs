@@ -34,5 +34,5 @@ public class CharacterBoxText : MonoBehaviour, ICharacterTracker<CharacterManage
     public void UpdateCharacterLevel(int i)
     {
         level.text = i.ToString();
-    } 
+    }
 }

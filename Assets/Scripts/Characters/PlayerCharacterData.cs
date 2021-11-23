@@ -1,11 +1,14 @@
 using System;
 using UnityEngine;
+
 [Serializable]
 public class PlayerCharacterData : CharacterCurrentData
 {
     public XPData experience;
-    public ItemController inventory_controller;
+    public ItemInventoryController inventory_controller;
     private ActionData leveling_action_data;
+
+    protected virtual int max_inventory_slots { get { return 3; } }
 
     public uint level { get { return experience.level; } }
 
@@ -14,11 +17,11 @@ public class PlayerCharacterData : CharacterCurrentData
     public event InventoryChangeHandler OnInventoryChange;
     public event ManagerEventSender<PlayerCharacterData> OnLevelChange;
 
-
     public PlayerCharacterData() : base()
     {
         experience = new XPData();
         experience.OnLevelUp += AdvanceLevelListener;
+        inventory_controller = new ItemInventoryController(max_inventory_slots, 1);
     }
 
     public void SetupPlayerAttackGroup()
@@ -38,16 +41,6 @@ public class PlayerCharacterData : CharacterCurrentData
     public void AddExperience(uint experience)
     {
         this.experience.AddXp(experience);
-    }
-
-    public void AddItem(Item item, int slot)
-    {
-        Item removed_item = inventory_controller.AddItem(item, slot);
-
-        if (removed_item != null)
-        {
-            // Report item to inventory
-        }
     }
 
     public override int max_health
@@ -82,6 +75,7 @@ public class PlayerCharacterData : CharacterCurrentData
 
         experience.xp = character_data.experience.xp;
         experience.level = character_data.experience.level;
+        inventory_controller.RestoreInventoryObjects(character_data.inventory_controller);
     }
 
 }

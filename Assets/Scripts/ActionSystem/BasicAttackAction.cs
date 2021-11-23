@@ -36,7 +36,7 @@ public class BasicAttackAction : AbstractAction, IAction
             OnAnimationChangeRequest?.Invoke(animation_name);
             CharacterManager desired_target = target_transform.GetComponent<CharacterManager>();
             desired_target.ChangeHealth(-data.damage, damage_type);
-            _next_action_time = Time.time + 1/frequency;
+            _next_action_time = Time.time + 1 / frequency;
         }
     }
 

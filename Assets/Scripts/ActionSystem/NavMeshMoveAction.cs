@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -39,7 +38,7 @@ public class NavMeshMoveAction : AbstractAction, IMovementAction
         {
             _navmeshagent.destination = desired_target.position;
         }
-        else if (1.5*target_distance < _range)
+        else if (1.5 * target_distance < _range)
         {
             _navmeshagent.destination = _SetRetreatPosition(desired_target.position);
         }
@@ -55,7 +54,7 @@ public class NavMeshMoveAction : AbstractAction, IMovementAction
         Vector3 new_position;
         bool isHit;
 
-        new_position = 2*_this_transform.position - target_position;
+        new_position = 2 * _this_transform.position - target_position;
         isHit = NavMesh.SamplePosition(new_position, out hit, _retreat_wiggle, NavMesh.AllAreas);
         if (isHit)
         {

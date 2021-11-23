@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public delegate void LevelEnumEventHandler(LevelEnums level);
@@ -45,7 +43,7 @@ public class BaseManager : MonoBehaviour
 
         foreach (PlayerCharacterData data in character_inventory.data)
         {
-            CreatePopulatedSlot(data);
+            character_inventory.SetPassiveContent(data);
         }
 
         CreateEmptySlot();
@@ -65,16 +63,6 @@ public class BaseManager : MonoBehaviour
         }
     }
 
-    private void CreatePopulatedSlot(PlayerCharacterData data)
-    {
-        GameObject character_ui_item = Instantiate(character_inventory.character_inventory_prefab, character_inventory.character_inventory_ui.transform);
-
-        foreach (ICharacterDataTracker tracker in character_ui_item.GetComponents<ICharacterDataTracker>())
-        {
-            tracker.SetPlayerData(data);
-        }
-    }
-
     private void AcceptCharacterUnlock(CharacterEnums type)
     {
         int next_cost = BaseStats.GetNextCost(character_inventory.data.Count + 1);
@@ -82,7 +70,6 @@ public class BaseManager : MonoBehaviour
 
         Destroy(empty_slot);
         character_inventory.AddNew(type, 1);
-        CreatePopulatedSlot(character_inventory.data[character_inventory.data.Count-1]);
         CreateEmptySlot();
     }
 
@@ -91,6 +78,7 @@ public class BaseManager : MonoBehaviour
         character_loader.SaveAll();
         GameStats.SaveAll();
         MoneyData.ClearEvents();
+        AllInventoryLookup.ClearEvents();
 
         scene_changer.ChangeSceneToLevel(level);
     }

@@ -1,11 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ActionPrefabGenerator : MonoBehaviour
 {
     public Dictionary<string, GameObject> gameobject_reference;
-    
+
     private GameObject[] all_prefabs;
     private string effects_dirname = "CombatEffects";
     public void Awake()

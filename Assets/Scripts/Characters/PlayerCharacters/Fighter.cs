@@ -3,12 +3,8 @@ using UnityEngine.AI;
 
 public class Fighter : PlayerCharacterData
 {
-    private int max_inventory_slots = 3;
-
     public Fighter() : base()
     {
-        inventory_controller = new ItemController(max_inventory_slots);
-
         _fixed_data = new CharacterFixedData
         {
             type = CharacterEnums.Fighter,

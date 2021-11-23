@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ActiveCharacterInventory : CharacterInventory
 {
     private ActionPrefabGenerator prefab_generator;
 
-    protected void Awake() 
+    protected void Awake()
     {
         base.Awake();
         prefab_generator = GetComponent<ActionPrefabGenerator>();

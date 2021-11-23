@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class EnemyCharacterManager : CharacterManager
 {
     public EnemyCharacterData enemy_character_data;

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +5,7 @@ public class CharacterInventory : MonoBehaviour
 {
     [SerializeField] public GameObject character_inventory_ui;
     [SerializeField] public GameObject character_inventory_prefab;
+    [SerializeField] public GameObject selected_character_details;
 
     public List<PlayerCharacterData> data;
     public List<ICharacterData> generic_data;
@@ -14,21 +14,6 @@ public class CharacterInventory : MonoBehaviour
     {
         data = new List<PlayerCharacterData>();
         generic_data = new List<ICharacterData>();
-    }
-
-    public void SetCharacterContent(PlayerCharacterManager current_character)
-    {
-        GameObject character_ui_item = Instantiate(character_inventory_prefab, character_inventory_ui.transform);
-
-        foreach (ICharacterTracker<CharacterManager> tracker in character_ui_item.GetComponents<ICharacterTracker<CharacterManager>>())
-        {
-            tracker.SetTracking(current_character);
-        }
-
-        foreach (ICharacterTracker<PlayerCharacterManager> tracker in character_ui_item.GetComponents<ICharacterTracker<PlayerCharacterManager>>())
-        {
-            tracker.SetTracking(current_character);
-        }
     }
 
     public bool LoadCharacter(int slot)
@@ -49,6 +34,7 @@ public class CharacterInventory : MonoBehaviour
     {
         PlayerCharacterData temp_data = SelectCharacterObject(type);
         TrackNew(temp_data);
+        SetPassiveContent(temp_data);
     }
 
     public void AddExperience(uint experience)
@@ -78,5 +64,37 @@ public class CharacterInventory : MonoBehaviour
             default:
                 return null;
         }
+    }
+
+    public void SetActiveContent(PlayerCharacterManager current_character)
+    {
+        GameObject character_ui_item = CreateCharacterMenuItem();
+
+        foreach (ICharacterTracker<CharacterManager> tracker in character_ui_item.GetComponents<ICharacterTracker<CharacterManager>>())
+        {
+            tracker.SetTracking(current_character);
+        }
+
+        foreach (ICharacterTracker<PlayerCharacterManager> tracker in character_ui_item.GetComponents<ICharacterTracker<PlayerCharacterManager>>())
+        {
+            tracker.SetTracking(current_character);
+        }
+    }
+
+    public void SetPassiveContent(PlayerCharacterData data)
+    {
+        GameObject character_ui_item = CreateCharacterMenuItem();
+
+        foreach (ICharacterDataTracker tracker in character_ui_item.GetComponents<ICharacterDataTracker>())
+        {
+            tracker.SetPlayerData(data);
+        }
+    }
+
+    private GameObject CreateCharacterMenuItem()
+    {
+        GameObject character_ui_item = Instantiate(character_inventory_prefab, character_inventory_ui.transform);
+        character_ui_item.GetComponent<ToggleGameobject>().toggle_object = selected_character_details;
+        return character_ui_item;
     }
 }

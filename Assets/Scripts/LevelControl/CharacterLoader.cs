@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class CharacterLoader
 {
     private CharacterInventory character_inventory;
@@ -59,10 +55,5 @@ public class CharacterLoader
                 break;
 
         }
-    }
-
-    private void CreateEmpty()
-    {
-
     }
 }

@@ -4,12 +4,10 @@ using UnityEngine.AI;
 public class Mage : PlayerCharacterData
 {
     private ProjectileController projectile_controller;
-    private int max_inventory_slots = 3;
+    protected override int max_inventory_slots { get { return 3; } }
 
     public Mage(ProjectileController projectile_controller) : base()
     {
-        inventory_controller = new ItemController(max_inventory_slots);
-
         if (projectile_controller != null)
         {
             this.projectile_controller = projectile_controller;

@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class ActionData : IActionData
 {
     public float frequency { get; set; }

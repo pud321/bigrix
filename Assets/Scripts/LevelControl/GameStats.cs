@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using System;
-using UnityEngine;
 
 public static class GameStats
 {
@@ -15,7 +12,7 @@ public static class GameStats
 
     public static int max_characters = 5;
     public static CharacterEnums[] player_character_types = new CharacterEnums[] {
-        CharacterEnums.Fighter, 
+        CharacterEnums.Fighter,
         CharacterEnums.Mage,
         CharacterEnums.Priest,
     };
@@ -30,6 +27,9 @@ public static class GameStats
     private static long _elapsed_time;
     private static bool isTimerRunning;
 
+    // Inventory Variables
+    public static int inventory_slots = 8;
+    public static int inventory_stack_size = 999;
 
     private static PersistantGameData game_data;
 
@@ -75,7 +75,7 @@ public static class GameStats
     {
         enemy_characters_count += amount;
     }
-    
+
     public static void ChangeCharacterCount(PlayerCharacterManager this_character, int amount)
     {
         player_characters_count += amount;
@@ -92,7 +92,7 @@ public static class GameStats
 
     private static float GetTime()
     {
-        long temp_output; 
+        long temp_output;
 
         if (isTimerRunning)
         {
