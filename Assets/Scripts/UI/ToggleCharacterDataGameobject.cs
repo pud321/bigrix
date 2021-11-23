@@ -21,7 +21,7 @@ public class ToggleCharacterDataGameobject : ToggleGameobject, ICharacterDataTra
         {
             InitiateNewCharacter();
         }
-        else if (display_data.data.character_type == this_character_data.character_type)
+        else if (display_data.data == this_character_data)
         {
             toggle_object.SetActive(!toggle_object.activeSelf);
         }

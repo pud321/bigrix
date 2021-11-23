@@ -6,8 +6,8 @@ public delegate void ExperienceEventHandler();
 public class ExperienceSystem
 {
     public Dictionary<uint, uint> level_xp;
-    private float scaling_factor = 1.5f;
-    private float shift = 10f;
+    private float scaling_factor;
+    private float shift;
 
     public ExperienceSystem(float scaling_factor, float shift)
     {

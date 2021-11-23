@@ -2081,6 +2081,16 @@ MonoBehaviour:
       level: 1
       xp: 0
       next_xp: 1
+    inventory_controller:
+      inventory_size: 3
+      stack_capacity: 1
+      item_data_list:
+      - count: 0
+        type: 0
+      - count: 0
+        type: 0
+      - count: 0
+        type: 0
 --- !u!1 &1985034177 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4581851082851075012, guid: 9a9b19b8ce2ab644ba4babf79ab2adb3, type: 3}

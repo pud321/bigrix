@@ -43,9 +43,10 @@ public class XPData
         if (isLevelUp)
         {
             this.level += 1;
+            OnLevelUp?.Invoke();
             this.xp = this.xp - this.next_xp;
             this.next_xp = GameStats.experience_system.GetXPNeeded(level);
-            OnLevelUp?.Invoke();
+            AddXp(0);
         }
     }
 

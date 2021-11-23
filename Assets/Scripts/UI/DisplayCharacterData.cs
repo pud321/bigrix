@@ -16,6 +16,11 @@ public class DisplayCharacterData : MonoBehaviour
         data = null;
     }
 
+    public void Start()
+    {
+        this.gameObject.SetActive(false);
+    }
+
     public void SetData(PlayerCharacterData data)
     {
         this.data = data;

@@ -20,7 +20,7 @@ public static class GameStats
     // Experience system
     public static ExperienceSystem experience_system;
     public static readonly float scaling_factor = 1.5f;
-    public static readonly float shift = 10f;
+    public static readonly float shift = 30f;
 
     // Time Variables
     private static long time_checkpoint;
