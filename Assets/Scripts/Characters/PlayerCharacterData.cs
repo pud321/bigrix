@@ -1,5 +1,7 @@
 using System;
+using System.Linq;
 using UnityEngine;
+using System.Collections.Generic;
 
 [Serializable]
 public class PlayerCharacterData : CharacterCurrentData
@@ -12,16 +14,17 @@ public class PlayerCharacterData : CharacterCurrentData
 
     public uint level { get { return experience.level; } }
 
-    public delegate void InventoryChangeHandler(IAction action, int slot);
-
-    public event InventoryChangeHandler OnInventoryChange;
     public event ManagerEventSender<PlayerCharacterData> OnLevelChange;
+    private List<Item> item_modifiers;
 
     public PlayerCharacterData() : base()
     {
         experience = new XPData();
+        item_modifiers = new List<Item>();
+
         experience.OnLevelUp += AdvanceLevelListener;
         inventory_controller = new ItemInventoryController(max_inventory_slots, 1);
+        inventory_controller.OnInventoryUpdate += UpdateInventory;
     }
 
     public void SetupPlayerAttackGroup()
@@ -33,11 +36,6 @@ public class PlayerCharacterData : CharacterCurrentData
         basic_attack_group.AddAction(leveling_action_data);
     }
 
-    public void ReportInventoryChange(object o)
-    {
-        OnInventoryChange?.Invoke(null, 1);
-    }
-
     public void AddExperience(uint experience)
     {
         this.experience.AddXp(experience);
@@ -47,7 +45,14 @@ public class PlayerCharacterData : CharacterCurrentData
     {
         get
         {
-            return fixed_data.max_health;
+            float temp = fixed_data.max_health;
+
+            foreach (Item item in item_modifiers)
+            {
+                temp = item.ShiftHealth(temp);
+            }
+
+            return Mathf.RoundToInt(temp);
         }
     }
 
@@ -76,6 +81,29 @@ public class PlayerCharacterData : CharacterCurrentData
         experience.xp = character_data.experience.xp;
         experience.level = character_data.experience.level;
         inventory_controller.RestoreInventoryObjects(character_data.inventory_controller);
+    }
+
+    public void UpdateInventory(ItemSlotData[] item_data_list)
+    {
+        List<Item> basic_item_modifiers = new List<Item>();
+        item_modifiers = new List<Item>();
+
+        foreach (ItemSlotData data in item_data_list)
+        {
+            if (data == null || data.item == null)
+            {
+                continue;
+            }
+
+            item_modifiers.Add(data.item);
+
+            if (data.item.basic_attack)
+            {
+                basic_item_modifiers.Add(data.item);
+            }
+        }
+        basic_attack_group.item_modifiers = basic_item_modifiers;
+        RunDataChanged();
     }
 
 }

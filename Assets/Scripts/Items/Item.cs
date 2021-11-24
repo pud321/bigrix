@@ -12,12 +12,18 @@ public class Item
     public float damage_percent = 0f;
     public float range = 0f;
     public float frequency_percent = 0f;
+    public float health = 0f;
 
-    public Item(ItemEnum type, CharacterEnums[] characters)
+    public bool basic_attack = false;
+
+    public Item(ItemEnum type, CharacterEnums[] characters) : this(type, characters, true) { }
+
+    public Item(ItemEnum type, CharacterEnums[] characters, bool basic_attack)
     {
         this.type = type;
         this.name = type.ToString();
         this.characters = new HashSet<CharacterEnums>();
+        this.basic_attack = basic_attack;
 
         foreach (CharacterEnums c in characters)
         {
@@ -26,12 +32,17 @@ public class Item
 
     }
 
+    public float ShiftHealth(float value)
+    {
+        return value + this.health;
+    }
+
     public float ShiftRange(float value)
     {
         return value + this.range;
     }
 
-    public int ShiftDamage(int value)
+    public float ShiftDamage(float value)
     {
         return value + this.damage;
     }

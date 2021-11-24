@@ -17,40 +17,4 @@ public class ItemController
         return previous_item;
     }
 
-    public int GetItemDamage(int value)
-    {
-        float temp_value = (float)value;
-
-        foreach (Item item in items)
-        {
-            temp_value = item.ScaleDamage(temp_value);
-        }
-
-        value = Mathf.RoundToInt(temp_value);
-
-        foreach (Item item in items)
-        {
-            value = item.ShiftDamage(value);
-        }
-
-        return value;
-    }
-
-    public float GetItemFrequency(float value)
-    {
-        foreach (Item item in items)
-        {
-            value = item.ScaleFrequency(value);
-        }
-        return value;
-    }
-
-    public float GetItemRange(float value)
-    {
-        foreach (Item item in items)
-        {
-            value = item.ShiftRange(value);
-        }
-        return value;
-    }
 }

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInventoryDisplay : AbstractInventoryDisplay, ICharacterDataTracker
+public class PlayerInventoryDisplay : AbstractInventoryDisplay
 {
     private List<ItemInventorySingle> all_single_items;
 

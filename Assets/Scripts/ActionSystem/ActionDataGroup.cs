@@ -1,12 +1,15 @@
+using UnityEngine;
 using System.Collections.Generic;
 
 public class ActionDataGroup : IActionData
 {
     public List<IActionData> individual_action_data;
+    public List<Item> item_modifiers;
 
     public ActionDataGroup()
     {
         individual_action_data = new List<IActionData>();
+        item_modifiers = new List<Item>();
     }
 
     public void AddAction(IActionData data)
@@ -23,14 +26,24 @@ public class ActionDataGroup : IActionData
     {
         get
         {
-            int temp = 0;
+            float temp = 0;
 
             foreach (IActionData data in individual_action_data)
             {
                 temp += data.damage;
             }
 
-            return temp;
+            foreach (Item item in item_modifiers)
+            {
+                temp = item.ScaleDamage(temp);
+            }
+
+            foreach (Item item in item_modifiers)
+            {
+                temp = item.ShiftDamage(temp);
+            }
+
+            return Mathf.RoundToInt(temp);
         }
     }
 

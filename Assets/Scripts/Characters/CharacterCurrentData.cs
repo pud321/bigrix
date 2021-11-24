@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.AI;
 
 
+public delegate void DataChangeEventHandler();
+
 [System.Serializable]
 public abstract class CharacterCurrentData : ICharacterData
 {
@@ -10,6 +12,7 @@ public abstract class CharacterCurrentData : ICharacterData
     public ActionDataGroup basic_attack_group { get; set; }
 
     protected IActionData basic_attack_data;
+    public event DataChangeEventHandler OnDataChanged;
 
     public CharacterCurrentData()
     {
@@ -29,6 +32,11 @@ public abstract class CharacterCurrentData : ICharacterData
     public virtual NavMeshMoveAction GetMovement(Transform this_transform)
     {
         return new NavMeshMoveAction(this_transform.GetComponent<NavMeshAgent>());
+    }
+
+    public void RunDataChanged()
+    {
+        OnDataChanged?.Invoke();
     }
 
     public virtual int max_health

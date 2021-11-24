@@ -99,7 +99,10 @@ public class ItemInventorySingle : MonoBehaviour, IPointerDownHandler, IDragHand
 
     public void AddData(ItemEnum type, int count)
     {
-        item_data.AddItemSlot(type, count, box_id);
+        if (count > 0)
+        {
+            item_data.AddItemSlot(type, count, box_id);
+        }
     }
 
 }
