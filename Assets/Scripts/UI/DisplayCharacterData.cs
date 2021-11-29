@@ -46,8 +46,6 @@ public class DisplayCharacterData : MonoBehaviour
 
     private void RefreshDisplayData(ItemSlotData[] data)
     {
-        Debug.Log("Update inventory");
-        Debug.Log(this.data.max_health);
         foreach (ICharacterDataDisplay display_object in display_objects)
         {
             display_object.UpdateDisplay(this.data);

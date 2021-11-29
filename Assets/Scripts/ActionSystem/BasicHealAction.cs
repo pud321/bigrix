@@ -25,7 +25,7 @@ public class BasicHealAction : AbstractAction, IAction
         return _targeting.GetCurrentTarget();
     }
 
-    public override void RunAction()
+    public override float RunAction()
     {
         Transform target_transform = DesiredTarget();
         CharacterManager desired_target = target_transform.GetComponent<CharacterManager>();
@@ -36,6 +36,8 @@ public class BasicHealAction : AbstractAction, IAction
             desired_target.ChangeHealth(data.damage, damage_type);
             _next_action_time = Time.time + 1 / frequency;
         }
+
+        return 1f;
     }
 
     public override bool CanRunAction()

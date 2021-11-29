@@ -21,6 +21,24 @@ public class PlayerInventoryDisplay : AbstractInventoryDisplay
         AllInventoryLookup.SetPlayer(data.inventory_controller);
     }
 
+    public void SetDragHighlight(bool canHighlight)
+    {
+        if (!canHighlight)
+        {
+            foreach (ItemInventorySingle item_box in all_single_items)
+            {
+                item_box.SetBoxIncompatible();
+            }
+        }
+        else
+        {
+            foreach (ItemInventorySingle item_box in all_single_items)
+            {
+                item_box.SetBoxCompatible();
+            }
+        }
+    }
+
     protected override void AddNewBox(int i)
     {
         GameObject g_container = CreateItemSlot();
@@ -30,18 +48,15 @@ public class PlayerInventoryDisplay : AbstractInventoryDisplay
 
     private void PlayerChange()
     {
-        if (item_data != null)
-        {
-            item_data.OnInventoryUpdate -= UpdateAllDisplays;
-        }
+        PlayerUnsubscribe();
 
         item_data = AllInventoryLookup.player;
-        item_data.OnInventoryUpdate += UpdateAllDisplays;
+        PlayerSubscribe();
         CreateBoxesForPlayer();
 
         for (int i = 0; i < item_data.inventory_size; i++)
         {
-            all_single_items[i].item_data = item_data;
+            all_single_items[i].controller = item_data;
         }
         item_data.UpdateInventory();
     }
@@ -61,6 +76,24 @@ public class PlayerInventoryDisplay : AbstractInventoryDisplay
         for (int i = item_data.inventory_size; i < instantiated_gameobjects.Count; i++)
         {
             instantiated_gameobjects[i].SetActive(false);
+        }
+    }
+
+
+    private void PlayerSubscribe()
+    {
+        item_data.OnInventoryUpdate += UpdateAllDisplays;
+        item_data.OnCharacterTypeCheck += SetDragHighlight;
+        item_data.OnToolTipRequest += RequestToolTip;
+    }
+
+    private void PlayerUnsubscribe()
+    {
+        if (item_data != null)
+        {
+            item_data.OnInventoryUpdate -= UpdateAllDisplays;
+            item_data.OnCharacterTypeCheck -= SetDragHighlight;
+            item_data.OnToolTipRequest -= RequestToolTip;
         }
     }
 }

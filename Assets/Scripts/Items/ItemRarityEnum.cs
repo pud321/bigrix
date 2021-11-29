@@ -1,5 +1,5 @@
 public enum ItemRarityEnum
 {
-    Common = 1,
-    Uncommon = 2,
+    Common = 0,
+    Uncommon = 1,
 }

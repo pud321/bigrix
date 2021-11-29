@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 
-public class ItemInventorySingle : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
+public class ItemInventorySingle : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private Text ItemName;
     [SerializeField] private Text ItemCount;
@@ -11,17 +11,18 @@ public class ItemInventorySingle : MonoBehaviour, IPointerDownHandler, IDragHand
     public Item this_item;
     public int count;
     public int box_id;
-    public ItemInventoryController item_data;
+    public ItemInventoryController controller;
     public bool isEmpty { get { return this_item == null; } }
 
     private CanvasGroup canvas_group;
-    private Vector2 saved_position;
     private RectTransform parent_transform;
+    private Image item_background;
 
     public void Awake()
     {
         canvas_group = GetComponent<CanvasGroup>();
         parent_transform = transform.parent.GetComponent<RectTransform>();
+        item_background = GetComponent<Image>();
         Clear();
     }
     public void SetNameCount(Item this_item, int count)
@@ -51,13 +52,14 @@ public class ItemInventorySingle : MonoBehaviour, IPointerDownHandler, IDragHand
     {
         if (this_item != null)
         {
+            controller.ShowItemTooltip(null);
+
             canvas_group.blocksRaycasts = false;
             canvas_group.alpha = 0.8f;
 
-            saved_position = this.transform.position;
             this.transform.SetParent(parent_transform.parent.parent.parent.transform);
+            AllInventoryLookup.SetCompatibiilty(this_item);
         }
-
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -70,39 +72,62 @@ public class ItemInventorySingle : MonoBehaviour, IPointerDownHandler, IDragHand
 
     public void OnPointerUp(PointerEventData eventData)
     {
+        AllInventoryLookup.ResetCompatibiilty();
+
+
         canvas_group.blocksRaycasts = true;
         canvas_group.alpha = 1f;
 
         this.transform.SetParent(parent_transform);
-        this.transform.position = saved_position;
+        this.transform.localPosition = Vector2.zero;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        controller.ShowItemTooltip(this_item);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        controller.ShowItemTooltip(null);
     }
 
     public ItemSlotData GetItemSlotData()
     {
-        return item_data.item_data_list[box_id];
+        return controller.item_data_list[box_id];
     }
 
     public int ItemsAddableSwap(ItemEnum type, int count)
     {
-        return item_data.GetItemsAddable(type, count, GetItemSlotData());
+        return controller.GetItemsAddable(type, count, GetItemSlotData());
     }
 
     public int ItemsAddableAdd(ItemEnum type, int count)
     {
-        return item_data.GetItemsAddable(type, count);
+        return controller.GetItemsAddable(type, count);
     }
 
     public void ClearSlotContent()
     {
-        item_data.RemoveEntireSlot(box_id);
+        controller.RemoveEntireSlot(box_id);
     }
 
     public void AddData(ItemEnum type, int count)
     {
         if (count > 0)
         {
-            item_data.AddItemSlot(type, count, box_id);
+            controller.AddItemSlot(type, count, box_id);
         }
+    }
+
+    public void SetBoxIncompatible()
+    {
+        item_background.color = Color.red;
+    }
+
+    public void SetBoxCompatible()
+    {
+        item_background.color = Color.white;
     }
 
 }

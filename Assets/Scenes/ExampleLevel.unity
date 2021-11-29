@@ -1172,7 +1172,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   character_inventory_ui: {fileID: 893283675}
-  character_inventory_prefab: {fileID: 6280262961253822783, guid: a2c2473c248929b4d80c13cd48b2774c, type: 3}
+  character_inventory_prefab: {fileID: 548949601151088719, guid: 0c8eec4ebc733a54181fdc47f98b8b1b, type: 3}
+  selected_character_details: {fileID: 0}
   data: []
 --- !u!114 &2015637525
 MonoBehaviour:

@@ -29,7 +29,7 @@ public class NavMeshMoveAction : AbstractAction, IMovementAction
         return _targeting.GetCurrentTarget();
     }
 
-    public override void RunAction()
+    public override float RunAction()
     {
         Transform desired_target = DesiredTarget();
         float target_distance = Vector3.Distance(_this_transform.position, desired_target.position);
@@ -46,6 +46,8 @@ public class NavMeshMoveAction : AbstractAction, IMovementAction
         {
             StopAction();
         }
+
+        return 1f;
     }
 
     private Vector3 _SetRetreatPosition(Vector3 target_position)

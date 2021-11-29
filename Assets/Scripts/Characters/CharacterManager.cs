@@ -14,7 +14,7 @@ public abstract class CharacterManager : MonoBehaviour
 
 
     protected NavMeshAgent _navmeshagent;
-    private ActionController _action_controller;
+    protected ActionController _action_controller;
     private CharacterAnimationController _animation_controller;
 
     public ICharacterData character_data;

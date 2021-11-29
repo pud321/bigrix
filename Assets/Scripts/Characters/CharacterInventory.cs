@@ -10,10 +10,13 @@ public class CharacterInventory : MonoBehaviour
     public List<PlayerCharacterData> data;
     public List<ICharacterData> generic_data;
 
+    protected List<GameObject> character_inventory_ui_list;
+
     protected void Awake()
     {
         data = new List<PlayerCharacterData>();
         generic_data = new List<ICharacterData>();
+        character_inventory_ui_list = new List<GameObject>();
     }
 
     public bool LoadCharacter(int slot)
@@ -95,6 +98,7 @@ public class CharacterInventory : MonoBehaviour
     {
         GameObject character_ui_item = Instantiate(character_inventory_prefab, character_inventory_ui.transform);
         character_ui_item.GetComponent<ToggleGameobject>().toggle_object = selected_character_details;
+        character_inventory_ui_list.Add(character_ui_item);
         return character_ui_item;
     }
 }

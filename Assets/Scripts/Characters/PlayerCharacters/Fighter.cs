@@ -26,6 +26,7 @@ public class Fighter : PlayerCharacterData
         };
 
         SetupPlayerAttackGroup();
+        SetupInventory();
     }
 
     public override IAction GetBasicAttack(Transform this_transform)

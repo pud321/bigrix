@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 
     private SpawnerManager spawner;
     private UIManager ui_manager;
-    private CharacterInventory character_inventory;
+    private ActiveCharacterInventory character_inventory;
     private SceneChanger scene_changer;
     private CharacterLoader character_loader;
 
@@ -15,13 +15,14 @@ public class GameManager : MonoBehaviour
     {
         spawner = GetComponent<SpawnerManager>();
         ui_manager = GetComponent<UIManager>();
-        character_inventory = GetComponent<CharacterInventory>();
+        character_inventory = GetComponent<ActiveCharacterInventory>();
         character_loader = new CharacterLoader(character_inventory);
         scene_changer = GetComponent<SceneChanger>();
 
         GameStats.current_level = level_name;
         GameStats.Initialize();
         LevelController.Initialize();
+        SkillFactory.Initialize(GetComponent<ActionPrefabGenerator>());
 
         spawner.AddSpawnListener(DelegatePlayerSpawn);
         spawner.AddSpawnListener(DelegateEnemySpawn);
@@ -33,6 +34,9 @@ public class GameManager : MonoBehaviour
         character_loader.LoadSaved();
 
         spawner.SpawnAll(character_inventory.data);
+
+        character_inventory.SetSkillTracker(spawner.GetPlayerManagers());
+
         spawner.ListenToCharacterDamage(DelegateDamageInformation);
         spawner.ListenToCharacterDeath(DelegateEnemyDeath);
         spawner.ListenToCharacterDeath(DelegatePlayerDeath);
@@ -66,7 +70,9 @@ public class GameManager : MonoBehaviour
         ui_manager.UpdateScoreText();
 
         character_inventory.AddExperience(sender.xp_value);
-        MoneyData.ChangeMoney(sender.enemy_character_data.GetDropMoney());
+
+        sender.enemy_character_data.SetDropMoney();
+        sender.enemy_character_data.SetItemDrop();
 
         if (GameStats.enemy_characters_count == 0)
         {

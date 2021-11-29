@@ -15,6 +15,9 @@ public class Item
     public float health = 0f;
 
     public bool basic_attack = false;
+    public SkillEnum skill;
+    public bool isSkill = false;
+    public string description;
 
     public Item(ItemEnum type, CharacterEnums[] characters) : this(type, characters, true) { }
 
@@ -30,6 +33,12 @@ public class Item
             this.characters.Add(c);
         }
 
+    }
+
+    public void SetSkill(SkillEnum skill)
+    {
+        isSkill = true;
+        this.skill = skill;
     }
 
     public float ShiftHealth(float value)

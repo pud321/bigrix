@@ -4,9 +4,8 @@ public class ActionController
 {
     public NavMeshMoveAction movement_action;
     public IAction basic_action;
-    public IAction[] skilled_action;
+    public List<ISkill> skilled_action;
 
-    private int _total_actions = 1;
     private int _max_queue = 5;
 
     private Queue<IAction> action_history;
@@ -18,7 +17,7 @@ public class ActionController
 
     public ActionController(List<CharacterManager> allys, List<CharacterManager> enemies, CharacterAnimationController animation_controller)
     {
-        skilled_action = new IAction[_total_actions];
+        skilled_action = new List<ISkill>();
         action_history = new Queue<IAction>();
 
         _ally_characters = allys;
@@ -26,11 +25,17 @@ public class ActionController
         this.animation_controller = animation_controller;
     }
 
-    public void UpdateSkilledAction(IAction action, int slot)
+    public void UpdateSkilledAction(ISkill action)
     {
-        skilled_action[slot] = action;
+        skilled_action.Add(action);
         movement_action.UpdateRange(GetMinimumRange());
         SetActionTargets(action);
+        action.OnAnimationChangeRequest += AnimationChangeRequest;
+    }
+
+    public void ResetSkilledActions()
+    {
+        skilled_action = new List<ISkill>();
     }
 
     public void AddBasicAction(IAction action)
@@ -72,9 +77,9 @@ public class ActionController
             AddActionToQueue(next_action);
         }
 
-        next_action.RunAction();
+        float time_remaining = next_action.RunAction();
         last_action = next_action;
-        return 1f;
+        return time_remaining;
     }
 
     private void AnimationChangeRequest(string name)
@@ -95,7 +100,7 @@ public class ActionController
     private IAction FindNextAction()
     {
         float temp_time_remaining;
-        float best_time = basic_action.timeRemaining;
+        float best_time = float.MaxValue;
         IAction action_choice = basic_action;
 
         foreach (IAction action in skilled_action)

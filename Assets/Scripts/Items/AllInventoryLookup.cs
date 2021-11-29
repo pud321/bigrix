@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections.Generic;
+
 public delegate void PlayerChangeEventHandler();
 
 public static class AllInventoryLookup
@@ -30,5 +32,26 @@ public static class AllInventoryLookup
     public static void ClearEvents()
     {
         OnPlayerChange = null;
+    }
+
+    public static void SetCompatibiilty(Item item_data)
+    {
+        if (player != null)
+        {
+            player.SetItemCompatibility(item_data.characters);
+        }
+    }
+
+    public static void ResetCompatibiilty()
+    {
+        if (player != null)
+        {
+            player.SetItemCompatibility(true);
+        }
+    }
+
+    public static void IsCompatible(Item item_data)
+    {
+
     }
 }

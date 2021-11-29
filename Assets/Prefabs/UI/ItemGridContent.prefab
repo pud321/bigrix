@@ -172,6 +172,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemName: {fileID: 502003303300406320}
   ItemCount: {fileID: 7761680265518452703}
+  count: 0
+  box_id: 0
+  controller:
+    inventory_size: 0
+    stack_capacity: 0
+    item_data_list: []
 --- !u!225 &6750044049373381282
 CanvasGroup:
   m_ObjectHideFlags: 0

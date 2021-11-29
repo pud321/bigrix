@@ -4,7 +4,7 @@ using UnityEngine.AI;
 public class BasicEnemy : EnemyCharacterData
 {
 
-    public BasicEnemy() : base(100, new DropGenerator(100, 200))
+    public BasicEnemy() : base(100, new DropGenerator(100, 200, 0.1f))
     {
         _fixed_data = new CharacterFixedData
         {
@@ -24,6 +24,7 @@ public class BasicEnemy : EnemyCharacterData
         };
 
         SetupAttackGroup();
+        drop_generator.AddItem(ItemEnum.DowndashTechnique, 100);
     }
 
     public override IAction GetBasicAttack(Transform this_transform)

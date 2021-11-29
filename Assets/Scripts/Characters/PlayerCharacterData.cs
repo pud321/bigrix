@@ -23,8 +23,6 @@ public class PlayerCharacterData : CharacterCurrentData
         item_modifiers = new List<Item>();
 
         experience.OnLevelUp += AdvanceLevelListener;
-        inventory_controller = new ItemInventoryController(max_inventory_slots, 1);
-        inventory_controller.OnInventoryUpdate += UpdateInventory;
     }
 
     public void SetupPlayerAttackGroup()
@@ -34,6 +32,27 @@ public class PlayerCharacterData : CharacterCurrentData
         leveling_action_data.damage_type = basic_attack_group.damage_type;
         leveling_action_data.action_type = basic_attack_group.action_type;
         basic_attack_group.AddAction(leveling_action_data);
+    }
+
+    public List<SkillEnum> GetSkills()
+    {
+        List<SkillEnum> skills = new List<SkillEnum>();
+
+        foreach (Item item_data in item_modifiers)
+        {
+            if (item_data.isSkill)
+            {
+                skills.Add(item_data.skill);
+            }
+        }
+
+        return skills;
+    }
+
+    protected void SetupInventory()
+    {
+        inventory_controller = new PlayerItemInventoryController(max_inventory_slots, 1, character_type);
+        inventory_controller.OnInventoryUpdate += UpdateInventory;
     }
 
     public void AddExperience(uint experience)
@@ -81,6 +100,7 @@ public class PlayerCharacterData : CharacterCurrentData
         experience.xp = character_data.experience.xp;
         experience.level = character_data.experience.level;
         inventory_controller.RestoreInventoryObjects(character_data.inventory_controller);
+        UpdateInventory();
     }
 
     public void UpdateInventory(ItemSlotData[] item_data_list)
@@ -104,6 +124,11 @@ public class PlayerCharacterData : CharacterCurrentData
         }
         basic_attack_group.item_modifiers = basic_item_modifiers;
         RunDataChanged();
+    }
+
+    private void UpdateInventory()
+    {
+        UpdateInventory(inventory_controller.item_data_list);
     }
 
 }

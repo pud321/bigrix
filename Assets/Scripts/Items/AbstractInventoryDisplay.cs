@@ -7,6 +7,7 @@ public abstract class AbstractInventoryDisplay : MonoBehaviour
     [SerializeField] protected GameObject InventoryBoxEmptyPrefab;
     [SerializeField] protected GameObject InventoryBoxContentPrefab;
     [SerializeField] protected GameObject GridTransform;
+    [SerializeField] protected ItemTooltip TooltipBox;
 
     protected List<ItemSlot> all_current_boxes;
     protected List<GameObject> instantiated_gameobjects;
@@ -17,11 +18,13 @@ public abstract class AbstractInventoryDisplay : MonoBehaviour
     {
         all_current_boxes = new List<ItemSlot>();
         instantiated_gameobjects = new List<GameObject>();
+        TooltipBox = GameObject.Find("ItemTooltipBox").GetComponent<ItemTooltip>();
     }
 
     protected virtual void Start()
     {
         item_data.OnInventoryUpdate += UpdateAllDisplays;
+        item_data.OnToolTipRequest += RequestToolTip;
 
         for (int i = 0; i < item_data.inventory_size; i++)
         {
@@ -50,7 +53,7 @@ public abstract class AbstractInventoryDisplay : MonoBehaviour
     {
         GameObject g_content = Instantiate(InventoryBoxContentPrefab, g_container.transform);
         ItemInventorySingle item_single = g_content.GetComponent<ItemInventorySingle>();
-        item_single.item_data = item_data;
+        item_single.controller = item_data;
         item_single.box_id = i;
         return item_single;
     }
@@ -75,4 +78,8 @@ public abstract class AbstractInventoryDisplay : MonoBehaviour
         }
     }
 
+    protected void RequestToolTip(Item item_data)
+    {
+        TooltipBox.SetItem(item_data);
+    }
 }

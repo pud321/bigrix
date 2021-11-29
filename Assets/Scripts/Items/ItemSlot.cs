@@ -53,6 +53,11 @@ public class ItemSlot : MonoBehaviour, IDropHandler
             return;
         }
 
+        if (!IsCompatible(return_inventory, box_content))
+        {
+            return;
+        }
+
         // Data transfer logic.  Needs to be cleaned up.
         ItemSlotData source_data = return_inventory.GetItemSlotData();
         ItemSlotData sink_data = box_content.GetItemSlotData();
@@ -119,5 +124,23 @@ public class ItemSlot : MonoBehaviour, IDropHandler
         int can_add = box_content.ItemsAddableAdd(type, count);
         box_content.AddData(type, can_add);
         return_inventory.AddData(type, count - can_add);
+    }
+
+    private bool IsCompatible(ItemInventorySingle return_inventory, ItemInventorySingle source_inventory)
+    {
+        if (!source_inventory.controller.IsCompatible(return_inventory.this_item.characters))
+        {
+            return false;
+        }
+
+        if (return_inventory.controller != null && source_inventory.this_item != null)
+        {
+            if (!return_inventory.controller.IsCompatible(source_inventory.this_item.characters))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

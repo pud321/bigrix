@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class EnemyCharacterData : CharacterCurrentData
 {
 
@@ -10,8 +12,18 @@ public class EnemyCharacterData : CharacterCurrentData
         this.drop_generator = drops;
     }
 
-    public int GetDropMoney()
+    public void SetDropMoney()
     {
-        return drop_generator.GetMoney();
+        drop_generator.GetMoney();
+    }
+
+    public void SetItemDrop()
+    {
+        int item_int = drop_generator.GetItem();
+
+        if (item_int > -1)
+        {
+            AllInventoryLookup.all.AddItem((ItemEnum)item_int, 1);
+        }
     }
 }

@@ -18,7 +18,7 @@ public abstract class AbstractAction
 
     public abstract void SetTargets(List<CharacterManager> targets);
 
-    public abstract void RunAction();
+    public abstract float RunAction();
     public abstract void StopAction();
     public virtual bool CanRunAction()
     {

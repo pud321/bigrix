@@ -80,6 +80,11 @@ public class SpawnerManager : MonoBehaviour
         }
     }
 
+    public List<PlayerCharacterManager> GetPlayerManagers()
+    {
+        return player_spawner.manager_list;
+    }
+
     private void DestoryCharacter(CharacterManager sender)
     {
         cleanup_queue.Enqueue(sender.gameObject);

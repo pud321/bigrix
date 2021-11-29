@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class ActiveCharacterInventory : CharacterInventory
 {
@@ -26,4 +27,20 @@ public class ActiveCharacterInventory : CharacterInventory
         }
     }
 
+    public void SetSkillTracker(List<PlayerCharacterManager> current_characters)
+    {
+        GameObject g;
+
+        for (int i = 0; i < current_characters.Count; i++)
+        {
+            List<ISkill> current_skills = current_characters[i].GetSkills();
+
+            foreach (ISkill skill in current_skills)
+            {
+                character_inventory_ui_list[i].GetComponent<SkillTimerController>().CreatePrefab(skill);
+            }
+
+        }
+
+    }
 }

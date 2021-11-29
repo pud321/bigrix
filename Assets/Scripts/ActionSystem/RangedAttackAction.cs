@@ -36,7 +36,7 @@ public class RangedAttackAction : AbstractAction, IAction
         return _targeting.GetCurrentTarget();
     }
 
-    public override void RunAction()
+    public override float RunAction()
     {
         Transform target_transform = DesiredTarget();
 
@@ -46,7 +46,7 @@ public class RangedAttackAction : AbstractAction, IAction
 
             if (projectile_control == null)
             {
-                return;
+                return 0f;
             }
 
 
@@ -57,8 +57,11 @@ public class RangedAttackAction : AbstractAction, IAction
                 current_target = desired_target;
                 OnAnimationChangeRequest?.Invoke(animation_name);
                 _next_action_time = Time.time + 1 / frequency;
+                return 1f;
             }
         }
+
+        return 0f;
     }
 
     public void ProjectileHit()

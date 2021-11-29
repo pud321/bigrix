@@ -34,6 +34,7 @@ public class Mage : PlayerCharacterData
         };
 
         SetupPlayerAttackGroup();
+        SetupInventory();
     }
 
     public override IAction GetBasicAttack(Transform this_transform)

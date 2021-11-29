@@ -6,7 +6,7 @@ public delegate void BooleanAnimationEventHandler(string s);
 
 public interface IAction
 {
-    void RunAction();
+    float RunAction();
     void StopAction();
     bool CanRunAction();
     void SetTargets(List<CharacterManager> targets);

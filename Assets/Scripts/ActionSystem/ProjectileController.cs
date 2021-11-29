@@ -6,24 +6,25 @@ public class ProjectileController : MonoBehaviour
 {
     public event ProjectileHitEventHandler OnProjectileHit;
 
-    private GameObject projectile_gameobject;
-    private Transform start_transform;
-    private Transform end_transform;
-    private Vector3 y_offset;
+    protected GameObject projectile_gameobject;
+    protected Transform start_transform;
+    protected Transform end_transform;
+    protected Vector3 y_offset;
 
-    private float speed = 3;
-    private float distance_total;
-    private float start_time;
-    private bool is_collision;
+    protected float speed;
+    protected float distance_total;
+    protected float start_time;
+    protected bool is_collision;
 
-    private void Awake()
+    protected virtual void Awake()
     {
+        speed = 3;
         projectile_gameobject = this.gameObject;
         projectile_gameobject.SetActive(false);
         GetComponent<Rigidbody>().isKinematic = true;
     }
 
-    public bool RequestAttack(Transform start_transform, Transform end_transform)
+    public virtual bool RequestAttack(Transform start_transform, Transform end_transform)
     {
         if (projectile_gameobject.activeSelf)
         {
@@ -40,7 +41,7 @@ public class ProjectileController : MonoBehaviour
         return true;
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         if (projectile_gameobject.activeSelf)
         {

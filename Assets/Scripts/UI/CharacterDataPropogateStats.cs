@@ -15,11 +15,16 @@ public class CharacterDataPropogateStats : MonoBehaviour, ICharacterDataDisplay
     {
         damage_text.text = GetMenuText(data.basic_attack_group.damage, "dmg");
         range_text.text = GetMenuText(data.basic_attack_group.range, "rng");
-        atk_speed_text.text = GetMenuText(System.Math.Round(1/data.basic_attack_group.frequency, 2), "atk.spd");
+        atk_speed_text.text = GetMenuText((float)System.Math.Round(1/data.basic_attack_group.frequency, 2), "atk.spd");
         mv_speed_text.text = GetMenuText(data.movement_speed, "mv.spd");
     }
 
-    private string GetMenuText<T>(T value, string name)
+    private string GetMenuText(float value, string name)
+    {
+        return name + ": " + value.ToString("0.##");
+    }
+
+    private string GetMenuText(int value, string name)
     {
         return name + ": " + value.ToString();
     }

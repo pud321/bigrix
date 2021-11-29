@@ -27,7 +27,7 @@ public class BasicAttackAction : AbstractAction, IAction
         return _targeting.GetCurrentTarget();
     }
 
-    public override void RunAction()
+    public override float RunAction()
     {
         Transform target_transform = DesiredTarget();
 
@@ -38,6 +38,8 @@ public class BasicAttackAction : AbstractAction, IAction
             desired_target.ChangeHealth(-data.damage, damage_type);
             _next_action_time = Time.time + 1 / frequency;
         }
+
+        return 1f;
     }
 
     public override void StopAction()

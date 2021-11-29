@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using UnityEngine;
+
 public class PlayerCharacterManager : CharacterManager
 {
     public PlayerCharacterData player_character_data;
@@ -47,4 +50,21 @@ public class PlayerCharacterManager : CharacterManager
         }
     }
 
+    protected override void SetActions()
+    {
+        base.SetActions();
+        List<SkillEnum> skills = player_character_data.GetSkills();
+
+        _action_controller.ResetSkilledActions();
+
+        foreach (SkillEnum skill in skills)
+        {
+            _action_controller.UpdateSkilledAction(SkillFactory.Get(skill, character_data.basic_attack_group, _this_transform));
+        }
+    }
+
+    public List<ISkill> GetSkills()
+    {
+        return _action_controller.skilled_action;
+    }
 }

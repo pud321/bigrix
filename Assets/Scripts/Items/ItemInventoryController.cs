@@ -1,7 +1,10 @@
 using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 public delegate void InventoryChangedEventHandler(ItemSlotData[] item_data_list);
+public delegate void ItemCharacterTypeEventHandler(bool canHandle);
+public delegate void ItemTooltipRequest(Item item_data);
 
 [Serializable]
 public class ItemInventoryController
@@ -9,6 +12,8 @@ public class ItemInventoryController
     public int inventory_size;
     public int stack_capacity;
     public event InventoryChangedEventHandler OnInventoryUpdate;
+    public event ItemCharacterTypeEventHandler OnCharacterTypeCheck;
+    public event ItemTooltipRequest OnToolTipRequest;
 
     public ItemSlotData[] item_data_list;
 
@@ -63,6 +68,27 @@ public class ItemInventoryController
     {
         int items_remaining = RecursiveAddItem(type, count, slot);
         OnInventoryUpdate?.Invoke(item_data_list);
+    }
+
+    public void ShowItemTooltip(Item item_data)
+    {
+        OnToolTipRequest?.Invoke(item_data);
+    }
+
+
+    public virtual void SetItemCompatibility(HashSet<CharacterEnums> characters)
+    {
+        SetItemCompatibility(IsCompatible(characters));
+    }
+
+    public void SetItemCompatibility(bool isCompatible)
+    {
+        OnCharacterTypeCheck?.Invoke(isCompatible);
+    }
+
+    public virtual bool IsCompatible(HashSet<CharacterEnums> characters)
+    {
+        return true;
     }
 
     private int RecursiveAddItem(ItemEnum type, int count)
